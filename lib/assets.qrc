@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/chart.frag</file>
+        <file>assets/chart.vert</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file>CameraControls.qml</file>
+    </qresource>
+</RCC>
