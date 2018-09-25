@@ -25,7 +25,8 @@ Ascan::~Ascan()
 void Ascan::paint(QPainter *painter)
 {
     // paint background
-    painter->fillRect(QRectF(0,0,w,h), QBrush(QColor(Qt::black)));
+//    painter->fillRect(QRectF(0,0,w,h), QBrush(QColor(Qt::black)));
+
 
     // paint grid
     QPen pen;
@@ -63,7 +64,7 @@ void Ascan::paint(QPainter *painter)
     static int time1,time2,time_1s = 0;
     time1 = QTime::currentTime().msecsSinceStartOfDay();
 
-//    qDebug()<<__func__;
+
     time_1s += time1 - time2;
     if(time_1s > 1000){
         fps = frame_cnt * 1000 / time_1s;
@@ -71,10 +72,7 @@ void Ascan::paint(QPainter *painter)
         frame_cnt = 0;
 //        qDebug()<<__func__<<"time = 0"<<time;
     }
-//    if(time1-time2 != 0)
-//    fps = frame_cnt * 1000 / (time1-time2);
-//    fps = 1 * 1000 / (time1-time2);
-//    qDebug()<<__func__<<"time1-time2"<<time1<<" "<<time2<<" "<<time1-time2;
+
     time2 = QTime::currentTime().msecsSinceStartOfDay();
 
 

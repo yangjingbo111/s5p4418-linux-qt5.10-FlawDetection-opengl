@@ -1,5 +1,3 @@
-include(../lib/lib.pri)
-
 QT += core widgets quick quickcontrols2
 CONFIG += c++11
 
@@ -16,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    shader.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -46,7 +45,8 @@ HEADERS += \
     src/micros.h \
     src/WinTypes.h \
     src/workingthread.h \
-    src/ascanfbo.h
+    src/ascanfbo.h \
+    src/chartrenderer.h
 
 SOURCES += \
     src/appmanager.cpp \
@@ -56,7 +56,8 @@ SOURCES += \
     src/ft2232hwrapper.cpp \
     src/main.cpp \
     src/workingthread.cpp \
-    src/ascanfbo.cpp
+    src/ascanfbo.cpp \
+    src/chartrenderer.cpp
 
 TRANSLATIONS += res/translations/la_en.ts \
         res/translations/la_cn.ts

@@ -14,12 +14,12 @@ Window {
     visible: true
     width: 640
     height: 480
-    color: "red"
+    color: "black"
     title: qsTr("Flaw Detection")
 
     property int focusItemIndex: 0
     // menu 1
-    property int gainValue: 20
+    property int gainValue: 110
     property int rangeValue: 200
     property int highVolValue: 0
     property int emitDampValue: 0
@@ -46,7 +46,9 @@ Window {
 
         // ft2232h data ready
         onDataReady: {
-            ascan.recvData(data)
+
+//            ascan.recvData(data)
+            ascanfbo.recvData(data)
         }
     }
 
@@ -97,7 +99,7 @@ Window {
         Rectangle{
             width: parent.width
             height: 60
-            color: "red"
+//            color: "red"
 
             Text {
                 id: name
@@ -116,27 +118,30 @@ Window {
                 }
             }
         }
-        AscanFbo{
-            id: ascanfbo
-            width: 512
-            height: 400
-        }
+
+
         Row {
             width: parent.width
             height: 400
 
-            Ascan {
-                id: ascan
+//            Ascan {
+//                id: ascan
+//                width: 512
+//                height: 400
+
+//            }
+
+            AscanFbo{
+                id: ascanfbo
                 width: 512
                 height: 400
-
             }
-
 
 
             Item{
                 id: menu_container
-                anchors.left: ascan.right
+//                anchors.left: ascan.right
+                anchors.left: ascanfbo.right
                 focus: true
                 visible: true
 
@@ -193,7 +198,9 @@ Window {
                             if(app.rectificationTypeValue < 3)app.rectificationTypeValue += 1
 
                             ft2232HWrapper.wrrectificationType(app.rectificationTypeValue)
-                            ascan.setrectificationType(app.rectificationTypeValue)
+//                            ascan.setrectificationType(app.rectificationTypeValue)
+                            ascanfbo.setrectificationType(app.rectificationTypeValue)
+
                         }
                         else if(transducerType.hasFocus){
                             if(app.transducerTypeValue < 1)app.transducerTypeValue += 1
@@ -262,7 +269,8 @@ Window {
                             if(app.rectificationTypeValue > 0)app.rectificationTypeValue -= 1
 
                             ft2232HWrapper.wrrectificationType(app.rectificationTypeValue)
-                            ascan.setrectificationType(app.rectificationTypeValue)
+//                            ascan.setrectificationType(app.rectificationTypeValue)
+                            ascanfbo.setrectificationType(app.rectificationTypeValue)
                         }
                         else if(transducerType.hasFocus){
                             if(app.transducerTypeValue > 0)app.transducerTypeValue -= 1
@@ -287,7 +295,7 @@ Window {
                         //menu 3
                         else if(repeatFreq.hasFocus){
                             if(app.repeatFreqValue > 30)app.repeatFreqValue -= 10
-
+//                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 2
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
                         }
                     }

@@ -41,7 +41,7 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
         connect(m_readWorker, SIGNAL(dataReady(QByteArray)), this, SIGNAL(dataReady(QByteArray)), Qt::QueuedConnection);
 //        connect(m_readWorker, SIGNAL(dataReady(QByteArray)), this, SLOT(catchData(QByteArray)), Qt::QueuedConnection);
         m_readWorker->moveToThread(m_readThread);
-        m_readThread->start();
+        m_readThread->start(QThread::TimeCriticalPriority);
         emit initWorker();
     }
 

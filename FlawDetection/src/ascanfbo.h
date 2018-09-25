@@ -11,12 +11,14 @@ public:
     AscanFbo(QQuickItem *parent = nullptr);
     Renderer *createRenderer() const Q_DECL_OVERRIDE;
 
-    Q_INVOKABLE void deliverNewData(double data);
-    float getNewData();
+    Q_INVOKABLE void recvData(QByteArray data);
+    Q_INVOKABLE void setrectificationType(int val);
+    QByteArray getNewData();
 
     Q_PROPERTY(int dataLength READ dataLength WRITE setDataLength NOTIFY dataLengthChanged)
     int dataLength();
     void setDataLength(int dataLength);
+    int getType();
 
 signals:
     void dataLengthChanged(int dataLength);
@@ -24,10 +26,17 @@ signals:
 public slots:
     void updateManual();
 
+
+private:
+    void combinePoints(QByteArray data);
+
 private:
     QTimer timer;
     float m_newData;
     int m_dataLength;
+
+    QByteArray m_data;
+    int m_rectificationType;
 
 };
 

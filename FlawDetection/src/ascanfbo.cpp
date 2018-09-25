@@ -11,12 +11,12 @@ public:
         m_render.initialize();
     }
 
-//    void synchronize(QQuickFramebufferObject *item) Q_DECL_OVERRIDE{
-//        m_window = item->window();
-//        AscanFbo *i = static_cast<AscanFbo *>(item);
-//        m_render.setNewData(i->getNewData());
+    void synchronize(QQuickFramebufferObject *item) Q_DECL_OVERRIDE{
+        m_window = item->window();
+        AscanFbo *i = static_cast<AscanFbo *>(item);
+        m_render.setNewData(i->getNewData(), i->getType());
 //        m_render.setDataLength(i->dataLength());
-//    }
+    }
 
     void render() Q_DECL_OVERRIDE{
         m_render.render();
@@ -26,7 +26,7 @@ public:
 
     QOpenGLFramebufferObject *createFramebufferObject(const QSize &size) Q_DECL_OVERRIDE{
         QOpenGLFramebufferObjectFormat format;
-        format.setSamples(4);
+//        format.setSamples(2);
         format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
         return new QOpenGLFramebufferObject(size, format);
     }
@@ -49,15 +49,22 @@ QQuickFramebufferObject::Renderer *AscanFbo::createRenderer() const
     return new AscanFboRenderer();
 }
 
-void AscanFbo::deliverNewData(double data)
+void AscanFbo::recvData(QByteArray data)
 {
-    m_newData = (float)data;
-    updateManual();
+    m_data = data;
+    combinePoints(data);
 }
 
-float AscanFbo::getNewData()
+void AscanFbo::setrectificationType(int val)
 {
-    return m_newData;
+    if(m_rectificationType != val){
+        m_rectificationType = val;
+    }
+}
+
+QByteArray AscanFbo::getNewData()
+{
+    return m_data;
 }
 
 int AscanFbo::dataLength()
@@ -73,7 +80,40 @@ void AscanFbo::setDataLength(int dataLength)
     }
 }
 
+int AscanFbo::getType()
+{
+    return m_rectificationType;
+}
+
 void AscanFbo::updateManual()
 {
+    update();
+}
+
+void AscanFbo::combinePoints(QByteArray data)
+{
+    // ATTENTION: 400 is the window height[top left is the origin]
+    if(m_rectificationType > 0) // 1 2 3
+    {
+        for(int i = 0; i< 512; i++){
+            if((unsigned char)data.at(i) > 200){  // shape the peak and
+                m_data[i] = (char)200;
+            }
+        }
+    }
+    else{ //radio rectification
+        for(int i = 0; i< 512; i++){
+            if((unsigned char)data.at(i) <= 28){  // shape the peak and
+                m_data[i] = 0;
+            }
+            else if((unsigned char)data.at(i) > 228){  // shape the peak and
+                m_data[i] = 200;
+            }
+            else {
+                m_data[i] = m_data[i]-28;;
+            }
+        }
+    }
+
     update();
 }
