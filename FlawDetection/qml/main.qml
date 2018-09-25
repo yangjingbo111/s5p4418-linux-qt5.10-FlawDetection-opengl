@@ -116,6 +116,11 @@ Window {
                 }
             }
         }
+        AscanFbo{
+            id: ascanfbo
+            width: 512
+            height: 400
+        }
         Row {
             width: parent.width
             height: 400
@@ -124,13 +129,10 @@ Window {
                 id: ascan
                 width: 512
                 height: 400
+
             }
 
-            AscanFbo{
-                id: ascanfbo
-                width: 512
-                height: 400
-            }
+
 
             Item{
                 id: menu_container

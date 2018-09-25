@@ -67,17 +67,23 @@ void main()
     outputColor = vec4(vTexColor.xyz,1.0)*vec4(1.0,1.0,1.0,1.0);
 
 ****************************************************************************/
-in vec2 texCoord;
-out vec4 outputColor;
+//in vec2 texCoord;
+//out vec4 outputColor;
 
-uniform sampler2D gSampler;
-uniform float alpha;
-uniform float r;
-uniform float g;
-uniform float b;
+//uniform sampler2D gSampler;
+//uniform float alpha;
+//uniform float r;
+//uniform float g;
+//uniform float b;
 
-void main(){
+//void main(){
 
-//    vec4 vTexColor = texture2D(gSampler, texCoord);
-    outputColor = vec4(r, g, b,alpha);
+////    vec4 vTexColor = texture2D(gSampler, texCoord);
+//    outputColor = vec4(r, g, b,alpha);
+//}
+
+varying mediump vec4 color;
+void main(void)
+{
+    gl_FragColor = color;
 }

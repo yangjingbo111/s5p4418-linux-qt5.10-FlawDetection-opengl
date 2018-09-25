@@ -17,5 +17,5 @@ DISTFILES += \
     lib.pri
 
 RESOURCES += \
-    assets.qrc \
-    img.qrc
+    img.qrc \
+    shaders.qrc

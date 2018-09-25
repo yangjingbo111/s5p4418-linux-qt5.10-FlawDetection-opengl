@@ -8,21 +8,20 @@ class AscanFboRenderer: public QQuickFramebufferObject::Renderer
 {
 public:
     AscanFboRenderer(){
-//        m_render.initialize();
+        m_render.initialize();
     }
 
-    ~AscanFboRenderer() Q_DECL_OVERRIDE{
-    }
-    void synchronize(QQuickFramebufferObject *item) Q_DECL_OVERRIDE{
-        m_window = item->window();
-        AscanFbo *i = static_cast<AscanFbo *>(item);
-        m_render.setNewData(i->getNewData());
-        m_render.setDataLength(i->dataLength());
-    }
+//    void synchronize(QQuickFramebufferObject *item) Q_DECL_OVERRIDE{
+//        m_window = item->window();
+//        AscanFbo *i = static_cast<AscanFbo *>(item);
+//        m_render.setNewData(i->getNewData());
+//        m_render.setDataLength(i->dataLength());
+//    }
 
     void render() Q_DECL_OVERRIDE{
         m_render.render();
-        m_window->resetOpenGLState();
+//        m_window->resetOpenGLState();
+        update();
     }
 
     QOpenGLFramebufferObject *createFramebufferObject(const QSize &size) Q_DECL_OVERRIDE{
@@ -47,7 +46,7 @@ AscanFbo::AscanFbo(QQuickItem *parent)
 
 QQuickFramebufferObject::Renderer *AscanFbo::createRenderer() const
 {
-    return new AscanFboRenderer;
+    return new AscanFboRenderer();
 }
 
 void AscanFbo::deliverNewData(double data)
