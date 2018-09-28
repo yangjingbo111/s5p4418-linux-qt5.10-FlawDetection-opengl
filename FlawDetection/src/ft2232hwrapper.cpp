@@ -17,19 +17,23 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
         connect(this, SIGNAL(callWorker(int)), m_worker, SLOT(testFun(int)),Qt::QueuedConnection);
 
         // control API
+        // menu 1
         connect(this, SIGNAL(wrGainSig(int)), m_worker, SLOT(wrGain(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrRangeSig(int)), m_worker, SLOT(wrRange(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrHighVolSig(int)), m_worker, SLOT(wrHighVol(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrEmitDampSig(int)), m_worker, SLOT(wrEmitDamp(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrFilterBandSig(int)), m_worker, SLOT(wrFilterBand(int)), Qt::QueuedConnection);
-
+        // menu 2
         connect(this, SIGNAL(wrrectificationTypeSig(int)), m_worker, SLOT(wrrectificationType(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrtransducerTypeSig(int)), m_worker, SLOT(wrtransducerType(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrtcgGainSig(int)), m_worker, SLOT(wrtcgGain(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrkeyBoardBacklightSig(int)), m_worker, SLOT(wrkeyBoardBacklight(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrvgaSig(int)), m_worker, SLOT(wrvga(int)), Qt::QueuedConnection);
-
+        // menu 3
         connect(this, SIGNAL(wrrepeatFreqSig(int)), m_worker, SLOT(wrrepeatFreq(int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(wrhardwareDrawSig(int)), m_worker, SLOT(wrhardwareDraw(int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(wrechoDisplayModeSig(int)), m_worker, SLOT(wrechoDisplayMode(int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(wrechoFreezeSig(int)), m_worker, SLOT(wrechoFreeze(int)), Qt::QueuedConnection);
 
 
         m_worker->moveToThread(m_thread);
@@ -119,6 +123,21 @@ void Ft2232HWrapper::wrvga(int val)
 void Ft2232HWrapper::wrrepeatFreq(int val)
 {
     emit wrrepeatFreqSig(val);
+}
+
+void Ft2232HWrapper::wrhardwareDraw(int val)
+{
+    emit wrhardwareDrawSig(val);
+}
+
+void Ft2232HWrapper::wrechoDisplayMode(int val)
+{
+    emit wrechoDisplayModeSig(val);
+}
+
+void Ft2232HWrapper::wrechoFreeze(int val)
+{
+    emit wrechoFreezeSig(val);
 }
 
 void Ft2232HWrapper::catchData(QByteArray data)

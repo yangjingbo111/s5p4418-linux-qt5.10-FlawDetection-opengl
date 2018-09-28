@@ -13,30 +13,21 @@ public:
 
     Q_INVOKABLE void recvData(QByteArray data);
     Q_INVOKABLE void setrectificationType(int val);
+    Q_INVOKABLE void sethardwareDraw(int val);
     QByteArray getNewData();
-
-    Q_PROPERTY(int dataLength READ dataLength WRITE setDataLength NOTIFY dataLengthChanged)
-    int dataLength();
-    void setDataLength(int dataLength);
+    int hardwareDraw();
     int getType();
-
-signals:
-    void dataLengthChanged(int dataLength);
-
-public slots:
-    void updateManual();
-
 
 private:
     void combinePoints(QByteArray data);
 
 private:
-    QTimer timer;
+
     float m_newData;
-    int m_dataLength;
 
     QByteArray m_data;
     int m_rectificationType;
+    int m_hardwareDraw;
 
 };
 

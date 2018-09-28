@@ -17,6 +17,7 @@
 
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
+#include <QQuickWindow>
 
 //class QOpenGLBuffer;
 //class QOpenGLTexture;
@@ -35,6 +36,7 @@ public:
 //    void invalidate();
 
     void setNewData(QByteArray newData, int type);
+    void setHardwareDraw(int val);
 //    void setIsDoubleLines(bool isDoubleLines);
 //    void setDataLength(int dataLength);
 
@@ -63,7 +65,8 @@ private:
 //    int m_dataLength;
     QVector3D m_data_vetices[DATA_LENGTH];
 
-
+    QQuickWindow *m_window;
+    int m_hardwareDraw;
 
 private:
 

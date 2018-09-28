@@ -659,7 +659,7 @@ exit:   //something is wrong, need to report
 #include <QDebug>
 void Ft2232HWorker::testFun(int num)
 {
-    m_wrData.KEY_LED_REG = (1 << 2) | (m_wrData.KEY_LED_REG & 0x03);
+    m_wrData.KEY_MODE_REG = (1 << 2) | (m_wrData.KEY_MODE_REG & 0x03);
     writeFifo();
 
     QString program = "/usr/bin/gpio_test";
@@ -791,13 +791,14 @@ void Ft2232HWorker::wrtcgGain(int val)
 
 void Ft2232HWorker::wrkeyBoardBacklight(int val)
 {
-    m_wrData.KEY_LED_REG = (UCHAR)val;
+    m_wrData.KEY_MODE_REG = (UCHAR)val;
     writeFifo();
 }
 
 void Ft2232HWorker::wrvga(int val)
 {
-    m_wrData.VGA_PWR_EN = (UCHAR)val;
+//    m_wrData.VGA_PWR_EN = (UCHAR)val; //v2.0
+    m_wrData.ECHO_DISPLAY_CTRL = ((UCHAR)val << 3) | (m_wrData.ECHO_DISPLAY_CTRL & 0x07);    //v3.0
     writeFifo();
 }
 
@@ -808,6 +809,24 @@ void Ft2232HWorker::wrrepeatFreq(int val)
     writeFifo();
     qDebug()<<__func__<<val;
 
+}
+
+void Ft2232HWorker::wrhardwareDraw(int val)
+{
+    m_wrData.ECHO_DISPLAY_CTRL = ((UCHAR)val ) | (m_wrData.ECHO_DISPLAY_CTRL & 0x0e);
+    writeFifo();
+}
+
+void Ft2232HWorker::wrechoDisplayMode(int val)
+{
+    m_wrData.ECHO_DISPLAY_CTRL = ((UCHAR)val << 1) | (m_wrData.ECHO_DISPLAY_CTRL & 0x0d);
+    writeFifo();
+}
+
+void Ft2232HWorker::wrechoFreeze(int val)
+{
+    m_wrData.ECHO_DISPLAY_CTRL = ((UCHAR)val << 2) | (m_wrData.ECHO_DISPLAY_CTRL & 0x0b);
+    writeFifo();
 }
 
 

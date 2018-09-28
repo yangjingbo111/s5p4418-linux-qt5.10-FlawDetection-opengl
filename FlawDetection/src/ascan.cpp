@@ -9,6 +9,7 @@ Ascan::Ascan(QQuickItem *parent)
     w = 512;
     h = 400;
     m_rectificationType = 2; // default to plus rectification
+    m_hardwareDraw = 0;      // default : disable hardware draw
 
 //    m_timer = new QTimer(this);
 //    m_timer->setTimerType(Qt::PreciseTimer);
@@ -51,6 +52,8 @@ void Ascan::paint(QPainter *painter)
         x = 0;
         y += 10;
     }
+
+    if(m_hardwareDraw) return;
 
     // paint A scan
     painter->setPen(QPen(QColor(Qt::green)));
@@ -98,6 +101,13 @@ void Ascan::setrectificationType(int val)
 {
     if(m_rectificationType != val){
         m_rectificationType = val;
+    }
+}
+
+void Ascan::sethardwareDraw(int val)
+{
+    if(m_hardwareDraw != val){
+        m_hardwareDraw = val;
     }
 }
 

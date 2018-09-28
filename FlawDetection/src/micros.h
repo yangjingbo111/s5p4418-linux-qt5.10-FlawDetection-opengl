@@ -2,16 +2,17 @@
 #define MICROS_H
 
 //#include "WinTypes.h"
+// v3.0
 typedef struct Ft2232hCtl{
     unsigned char INIT_CTRL_REG;
     unsigned char res1;                 // 0x001
     unsigned char Encoder_Ctrl_Reg;
     unsigned char Scan_Unit_Reg;
     unsigned char ALARM_CTRL_REG;
-    unsigned char VGA_PWR_EN;
+    unsigned char KEY_MODE_REG;
     unsigned char res6;                 // 0x006
     unsigned char res7;                 // 0x007
-    unsigned char KEY_LED_REG;
+    unsigned char ECHO_DISPLAY_CTRL;
     unsigned char res9;
     unsigned char resA;
     unsigned char resB;

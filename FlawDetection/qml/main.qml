@@ -31,7 +31,10 @@ Window {
     property int keyBoardBacklightValue: 0
     property int vgaValue: 0
     //menu 3
-    property int repeatFreqValue: 30
+    property int repeatFreqValue: 50
+    property int hardwareDrawValue: 0
+    property int echoDisplayModeValue: 0
+    property int echoFreezeValue: 0
 
     //add value or sub value
     property string keyType: "" //left right up down
@@ -152,12 +155,12 @@ Window {
                     if(event.key === Utils.KEY_UP){   //KEY UP, SELECT THE UPSIDE ITEM
                         // control the hasFocus owner
                         if(app.focusItemIndex > 0) app.focusItemIndex -= 1
-                        else if(app.focusItemIndex === 0)app.focusItemIndex = 10
+                        else if(app.focusItemIndex === 0)app.focusItemIndex = 13
 
                     }
                     else if(event.key === Utils.KEY_DOWN){   //KEY DOWN, SELECT THE DOWNSIDE ITEM
-                        if(app.focusItemIndex < 10 /* 10 is now the MAX item num*/) app.focusItemIndex += 1
-                        else if(app.focusItemIndex === 10)app.focusItemIndex = 0
+                        if(app.focusItemIndex < 13 /* 13 is now the MAX item num*/) app.focusItemIndex += 1
+                        else if(app.focusItemIndex === 13)app.focusItemIndex = 0
                     }
                     else if(event.key === Utils.KEY_RIGHT){   //KEY RIGHT +
                         app.keyType = "right"
@@ -224,9 +227,29 @@ Window {
                         }
                         //menu 3
                         else if(repeatFreq.hasFocus){
-                            if(app.repeatFreqValue < 1000)app.repeatFreqValue += 10
-
+//                            if(app.repeatFreqValue < 1000)app.repeatFreqValue += 10
+                            if(app.repeatFreqValue < 1000)app.repeatFreqValue += 5
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
+                        }
+                        else if(hardwareDraw.hasFocus){//
+                            if(app.hardwareDrawValue === 0){
+                                app.hardwareDrawValue = 1
+                                ft2232HWrapper.wrhardwareDraw(app.hardwareDrawValue)
+//                                ascan.sethardwareDraw(app.hardwareDrawValue)
+                                ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                            }
+                        }
+                        else if(echoDisplayMode.hasFocus){
+                            if(app.echoDisplayModeValue === 0){
+                                app.echoDisplayModeValue = 1
+                                ft2232HWrapper.wrechoDisplayMode(app.echoDisplayModeValue)
+                            }
+                        }
+                        else if(echoFreeze.hasFocus){
+                            if(app.echoFreezeValue === 0){
+                                app.echoFreezeValue = 1
+                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                            }
                         }
                     }
                     else if(event.key === Utils.KEY_LEFT){  //KEY LEFT -
@@ -294,10 +317,31 @@ Window {
                         }
                         //menu 3
                         else if(repeatFreq.hasFocus){
-                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 10
+                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 5
 //                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 2
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
                         }
+                        else if(hardwareDraw.hasFocus){
+                            if(app.hardwareDrawValue === 1){
+                                app.hardwareDrawValue = 0
+                                ft2232HWrapper.wrhardwareDraw(app.hardwareDrawValue)
+//                                ascan.sethardwareDraw(app.hardwareDrawValue)
+                                ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                            }
+                        }
+                        else if(echoDisplayMode.hasFocus){
+                            if(app.echoDisplayModeValue === 1){
+                                app.echoDisplayModeValue = 0
+                                ft2232HWrapper.wrechoDisplayMode(app.echoDisplayModeValue)
+                            }
+                        }
+                        else if(echoFreeze.hasFocus){
+                            if(app.echoFreezeValue === 1){
+                                app.echoFreezeValue = 0
+                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                            }
+                        }
+                        //
                     }
                     else if(event.key === Utils.KEY_BACK){   // now use this ESC button to exit application
                         ft2232HWrapper.closeFt2232H()
@@ -490,6 +534,49 @@ Window {
                         }
 
                     }
+                    FunctionButton {
+                        id: hardwareDraw
+                        title: qsTr("menu_hardwareDraw")
+                        value: {
+                            if(app.hardwareDrawValue === 0)return qsTr("off")
+                            else if(app.hardwareDrawValue === 1)return qsTr("on")
+                        }
+                        index: 11
+                        hasFocus: {
+                            if(app.focusItemIndex === index) return true
+                            else return false
+                        }
+
+                    }
+                    FunctionButton {
+                        id: echoDisplayMode
+                        title: qsTr("menu_echoDisplayMode")
+                        value: {
+                            if(app.echoDisplayModeValue === 0)return qsTr("hollow")
+                            else if(app.echoDisplayModeValue === 1)return qsTr("solid")
+                        }
+                        index: 12
+                        hasFocus: {
+                            if(app.focusItemIndex === index) return true
+                            else return false
+                        }
+
+                    }
+                    FunctionButton {
+                        id: echoFreeze
+                        title: qsTr("menu_echoFreeze")
+                        value: {
+                            if(app.echoFreezeValue === 0)return qsTr("off")
+                            else if(app.echoFreezeValue === 1)return qsTr("on")
+                        }
+                        index: 13
+                        hasFocus: {
+                            if(app.focusItemIndex === index) return true
+                            else return false
+                        }
+
+                    }
+                    // one FunctionButton left
 
                 } //Column end
 

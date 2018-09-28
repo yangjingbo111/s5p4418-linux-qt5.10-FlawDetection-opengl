@@ -46,7 +46,8 @@ HEADERS += \
     src/WinTypes.h \
     src/workingthread.h \
     src/ascanfbo.h \
-    src/chartrenderer.h
+    src/chartrenderer.h \
+    src/ascanfborenderer.h
 
 SOURCES += \
     src/appmanager.cpp \
@@ -57,7 +58,8 @@ SOURCES += \
     src/main.cpp \
     src/workingthread.cpp \
     src/ascanfbo.cpp \
-    src/chartrenderer.cpp
+    src/chartrenderer.cpp \
+    src/ascanfborenderer.cpp
 
 TRANSLATIONS += res/translations/la_en.ts \
         res/translations/la_cn.ts

@@ -29,25 +29,30 @@ public:
     Q_INVOKABLE void wrvga(int val);
 
     Q_INVOKABLE void wrrepeatFreq(int val);
-
+    Q_INVOKABLE void wrhardwareDraw(int val);
+    Q_INVOKABLE void wrechoDisplayMode(int val);
+    Q_INVOKABLE void wrechoFreeze(int val);
 signals:
     void initWorker();
     void callWorker(int num);
     void dataReady(QByteArray data);
-
+    // menu 1
     void wrGainSig(int val);
     void wrRangeSig(int val);
     void wrHighVolSig(int val);
     void wrEmitDampSig(int val);
     void wrFilterBandSig(int val);
-
+    // menu 2
     void wrrectificationTypeSig(int val);
     void wrtransducerTypeSig(int val);
     void wrtcgGainSig(int val);
     void wrkeyBoardBacklightSig(int val);
     void wrvgaSig(int val);
-
+    // menu 3
     void wrrepeatFreqSig(int val);
+    void wrhardwareDrawSig(int val);
+    void wrechoDisplayModeSig(int val);
+    void wrechoFreezeSig(int val);
 
 public slots:
        void catchData(QByteArray data);

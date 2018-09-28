@@ -17,6 +17,7 @@ public:
     void paint(QPainter *painter);
     Q_INVOKABLE void recvData(QByteArray data);
     Q_INVOKABLE void setrectificationType(int val);
+    Q_INVOKABLE void sethardwareDraw(int val);
 public slots:
     void test_timer();
 private:
@@ -30,6 +31,7 @@ private:
     QByteArray m_localData;
     QTime time;
     int m_rectificationType;
+    int m_hardwareDraw;
 
     QTimer *m_timer;
 };

@@ -24,6 +24,7 @@ ChartRenderer::ChartRenderer(QObject *parent)
 //      m_data_vbo2(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer)),
 //      m_vcbo(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer))
 {
+    m_hardwareDraw = 0;
     init();
 //    m_isDoubleLines = false;
 //    m_dataLength = 100;
@@ -106,7 +107,7 @@ QVector3D c_grids_vetices[20] = {
 
 void ChartRenderer::initialize()
 {
-
+//    m_window =
 //    createGeometry();
 
 ///////////////////////////////////////////////////////////////////////////
@@ -176,6 +177,9 @@ void ChartRenderer::render()
 
     //画线1
 //    genNewData();//产生数据
+    if(m_hardwareDraw){
+        return;
+    }
     m_data_vbo.bind();
     m_data_vbo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
     m_data_vbo.allocate(m_data_vetices, (DATA_LENGTH)*sizeof(QVector3D));
@@ -236,6 +240,13 @@ void ChartRenderer::setNewData(QByteArray newData, int type)//note:newData 在�
     }
 
 
+}
+
+void ChartRenderer::setHardwareDraw(int val)
+{
+    if(m_hardwareDraw != val){
+        m_hardwareDraw = val;
+    }
 }
 
 

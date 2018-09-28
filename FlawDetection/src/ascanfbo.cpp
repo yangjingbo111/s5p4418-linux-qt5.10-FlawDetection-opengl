@@ -1,47 +1,17 @@
 #include "ascanfbo.h"
-#include <QQuickWindow>
+
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLFramebufferObjectFormat>
 #include "chartrenderer.h"
 
-class AscanFboRenderer: public QQuickFramebufferObject::Renderer
-{
-public:
-    AscanFboRenderer(){
-        m_render.initialize();
-    }
-
-    void synchronize(QQuickFramebufferObject *item) Q_DECL_OVERRIDE{
-        m_window = item->window();
-        AscanFbo *i = static_cast<AscanFbo *>(item);
-        m_render.setNewData(i->getNewData(), i->getType());
-//        m_render.setDataLength(i->dataLength());
-    }
-
-    void render() Q_DECL_OVERRIDE{
-        m_render.render();
-//        m_window->resetOpenGLState();
-        update();
-    }
-
-    QOpenGLFramebufferObject *createFramebufferObject(const QSize &size) Q_DECL_OVERRIDE{
-        QOpenGLFramebufferObjectFormat format;
-//        format.setSamples(2);
-        format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-        return new QOpenGLFramebufferObject(size, format);
-    }
-
-private:
-    QQuickWindow *m_window;
-    ChartRenderer m_render;
-};
+#include <QObject>
+#include "ascanfborenderer.h"
 
 AscanFbo::AscanFbo(QQuickItem *parent)
     :QQuickFramebufferObject(parent)
 {
-    m_dataLength = 100;
-//    timer.setInterval(40);
-//    connect(&timer, SIGNAL(timeout()), this, SLOT(updateManual()));
+    m_rectificationType = 2; // default to plus rectification
+    m_hardwareDraw = 0;      // default : disable hardware draw
 }
 
 QQuickFramebufferObject::Renderer *AscanFbo::createRenderer() const
@@ -51,6 +21,8 @@ QQuickFramebufferObject::Renderer *AscanFbo::createRenderer() const
 
 void AscanFbo::recvData(QByteArray data)
 {
+//    if(m_hardwareDraw)return;
+
     m_data = data;
     combinePoints(data);
 }
@@ -62,36 +34,33 @@ void AscanFbo::setrectificationType(int val)
     }
 }
 
+void AscanFbo::sethardwareDraw(int val)
+{
+    if(m_hardwareDraw != val){
+        m_hardwareDraw = val;
+    }
+}
+
 QByteArray AscanFbo::getNewData()
 {
     return m_data;
 }
 
-int AscanFbo::dataLength()
+int AscanFbo::hardwareDraw()
 {
-    return m_dataLength;
+    return m_hardwareDraw;
 }
 
-void AscanFbo::setDataLength(int dataLength)
-{
-    if(m_dataLength != dataLength){
-        m_dataLength = dataLength;
-        update();
-    }
-}
 
 int AscanFbo::getType()
 {
     return m_rectificationType;
 }
 
-void AscanFbo::updateManual()
-{
-    update();
-}
 
 void AscanFbo::combinePoints(QByteArray data)
 {
+
     // ATTENTION: 400 is the window height[top left is the origin]
     if(m_rectificationType > 0) // 1 2 3
     {
@@ -114,6 +83,7 @@ void AscanFbo::combinePoints(QByteArray data)
             }
         }
     }
+
 
     update();
 }

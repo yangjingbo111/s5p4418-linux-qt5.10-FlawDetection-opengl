@@ -32,6 +32,9 @@ public slots:
     void wrvga(int val);
 
     void wrrepeatFreq(int val);
+    void wrhardwareDraw(int val);
+    void wrechoDisplayMode(int val);
+    void wrechoFreeze(int val);
 private:
     FT_HANDLE       m_ftHandle;
     int         portNumber = 0;
