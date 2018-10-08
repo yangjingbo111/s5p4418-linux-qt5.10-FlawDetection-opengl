@@ -37,6 +37,7 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
 
 
         m_worker->moveToThread(m_thread);
+
         m_thread->start();
 
         m_readWorker = new Ft2232HReadWorker(ftHandle);

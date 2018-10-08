@@ -47,7 +47,8 @@ HEADERS += \
     src/workingthread.h \
     src/ascanfbo.h \
     src/chartrenderer.h \
-    src/ascanfborenderer.h
+    src/ascanfborenderer.h \
+    src/batteryworker.h
 
 SOURCES += \
     src/appmanager.cpp \
@@ -59,7 +60,8 @@ SOURCES += \
     src/workingthread.cpp \
     src/ascanfbo.cpp \
     src/chartrenderer.cpp \
-    src/ascanfborenderer.cpp
+    src/ascanfborenderer.cpp \
+    src/batteryworker.cpp
 
 TRANSLATIONS += res/translations/la_en.ts \
         res/translations/la_cn.ts

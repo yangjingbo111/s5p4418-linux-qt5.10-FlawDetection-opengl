@@ -31,6 +31,7 @@ var KEY_PEAK_MEM = 16777266
 var KEY_AUTO_GAIN = 16777265
 var KEY_PARA_SETTING = 16777264
 
+var MENU_ITEM_NUM =15;
 
 function func() {
 

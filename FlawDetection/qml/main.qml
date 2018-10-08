@@ -35,6 +35,13 @@ Window {
     property int hardwareDrawValue: 0
     property int echoDisplayModeValue: 0
     property int echoFreezeValue: 0
+    property int batteryRecordValue: 0  //0 stopped 1 recording //test
+
+    // battery
+    property string info: ""
+    property string adcval: ""
+    property int recordcnt: 0
+
 
     //add value or sub value
     property string keyType: "" //left right up down
@@ -42,6 +49,23 @@ Window {
 
     AppManager{
         id: appManager
+
+        onAdcReceived: {
+            adcval = val
+        }
+    }
+
+    // battery record timer
+    Timer{
+        id: adctimer
+        interval: 3000//2*60*1000  //2min
+        repeat: true
+        running: false
+        onTriggered: {
+            appManager.getadc(0)
+            status.text = "recording in every 2 min... "+recordcnt+": "+adcval
+            recordcnt++
+        }
     }
 
     Ft2232HWrapper{
@@ -155,12 +179,12 @@ Window {
                     if(event.key === Utils.KEY_UP){   //KEY UP, SELECT THE UPSIDE ITEM
                         // control the hasFocus owner
                         if(app.focusItemIndex > 0) app.focusItemIndex -= 1
-                        else if(app.focusItemIndex === 0)app.focusItemIndex = 13
+                        else if(app.focusItemIndex === 0)app.focusItemIndex = Utils.MENU_ITEM_NUM - 1
 
                     }
                     else if(event.key === Utils.KEY_DOWN){   //KEY DOWN, SELECT THE DOWNSIDE ITEM
-                        if(app.focusItemIndex < 13 /* 13 is now the MAX item num*/) app.focusItemIndex += 1
-                        else if(app.focusItemIndex === 13)app.focusItemIndex = 0
+                        if(app.focusItemIndex < Utils.MENU_ITEM_NUM - 1 /* 13 (14 include battery record) is now the MAX item num*/) app.focusItemIndex += 1
+                        else if(app.focusItemIndex === Utils.MENU_ITEM_NUM - 1)app.focusItemIndex = 0
                     }
                     else if(event.key === Utils.KEY_RIGHT){   //KEY RIGHT +
                         app.keyType = "right"
@@ -249,6 +273,16 @@ Window {
                             if(app.echoFreezeValue === 0){
                                 app.echoFreezeValue = 1
                                 ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                            }
+                        }
+                        else if(batteryRecord.hasFocus){
+                            if(app.batteryRecordValue === 0){
+                                app.batteryRecordValue = 1
+                                status.text = "start recording in every 2 min... "
+                                appManager.writeHeader("/opt/battery.txt")
+                                adctimer.restart()
+                                recordcnt = 0
+//                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
                             }
                         }
                     }
@@ -341,11 +375,30 @@ Window {
                                 ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
                             }
                         }
+                        else if(batteryRecord.hasFocus){
+                            if(app.batteryRecordValue === 1){
+                                app.batteryRecordValue = 0
+                                adctimer.stop()
+                                appManager.writeFooter("/opt/battery.txt")
+                                status.text = "stopped"
+//                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                            }
+                        }
                         //
                     }
                     else if(event.key === Utils.KEY_BACK){   // now use this ESC button to exit application
                         ft2232HWrapper.closeFt2232H()
                         appManager.startApp("/opt/Launcher/bin/Launcher")
+                    }
+                    // test battery record download
+                    else if(event.key === Utils.KEY_4){   // download battery.txt file to usb disk
+                        var usbnode = appManager.getUsbDiskNode()
+                        if(usbnode === "no usb"){
+                            status.text = "no usb"
+                            return
+                        }
+                        appManager.downloadFileToUsbDisk(usbnode, "/opt/battery.txt")
+                        status.text = "download battery.txt at usb disk root directory"
                     }
 
                     console.log("app.focusItemIndex: ", app.focusItemIndex)
@@ -576,7 +629,23 @@ Window {
                         }
 
                     }
-                    // one FunctionButton left
+                    // test battery record
+                    FunctionButton {
+                        id: batteryRecord
+                        title: qsTr("Bat Rec")
+                        value: {
+                            if(app.batteryRecordValue === 0)return qsTr("off")
+                            else if(app.batteryRecordValue === 1)return qsTr("on")
+                        }
+                        index: 14
+                        hasFocus: {
+                            if(app.focusItemIndex === index) return true
+                            else return false
+                        }
+
+                    }
+                    // no FunctionButton in menu 3
+
 
                 } //Column end
 
@@ -589,6 +658,13 @@ Window {
             width: parent.width
             height: 20
             color: "blue"
+            Text {
+                id: status
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "white"
+                font.pixelSize: 20
+                text: app.info
+            }
         }
     }
 
