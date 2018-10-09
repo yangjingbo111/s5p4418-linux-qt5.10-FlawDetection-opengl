@@ -469,11 +469,11 @@ void AppManager::dhcp()
 void AppManager::writeHeader(QString filename)
 {
     QFile file(filename);
-    if(!file.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text)){
+    if(!file.open(QIODevice::ReadWrite | QIODevice::Text)){
         qDebug().noquote()<<filename<<"open failed";
         return;
     }
-
+    file.resize(0); // clear file content
     file.write("-----------------start-----------------\r\n");
     file.close();
 }

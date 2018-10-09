@@ -58,7 +58,7 @@ Window {
     // battery record timer
     Timer{
         id: adctimer
-        interval: 3000//2*60*1000  //2min
+        interval: 2*60*1000  //2min
         repeat: true
         running: false
         onTriggered: {
@@ -379,7 +379,7 @@ Window {
                             if(app.batteryRecordValue === 1){
                                 app.batteryRecordValue = 0
                                 adctimer.stop()
-                                appManager.writeFooter("/opt/battery.txt")
+//                                appManager.writeFooter("/opt/battery.txt")
                                 status.text = "stopped"
 //                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
                             }
