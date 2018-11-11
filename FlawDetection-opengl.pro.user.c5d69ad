@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.7.0, 2018-11-11T13:16:51. -->
+<!-- Written by QtCreator 4.6.2, 2018-10-09T08:21:00. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{cd9824d4-fb34-4c31-a47a-709f85c7749f}</value>
+  <value type="QByteArray">{c5d69ad0-27bc-4429-b72b-f72de1df9c71}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -54,22 +54,19 @@
  </data>
  <data>
   <variable>ProjectExplorer.Project.PluginSettings</variable>
-  <valuemap type="QVariantMap">
-   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
-   <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
-  </valuemap>
+  <valuemap type="QVariantMap"/>
  </data>
  <data>
   <variable>ProjectExplorer.Project.Target.0</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">qt-for-linux</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qt-for-linux</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{977eaea9-e6f4-46d9-8894-dd8fa6316412}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">qt5.10-for-linux</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qt5.10-for-linux</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{49149a93-55f7-451a-9d21-5602438b3152}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt_for_linux-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -129,7 +126,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt_for_linux-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -189,7 +186,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt_for_linux-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -281,19 +278,49 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedFiles">
-       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yang/work/qt-progs/build-FlawDetection-opengl-qt5_10_for_linux-Debug/FlawDetection/FlawDetection</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts">
-       <value type="QString">192.168.0.115</value>
+       <value type="QString">192.168.137.81</value>
+       <value type="QString">192.168.137.57</value>
+       <value type="QString">192.168.137.59</value>
+       <value type="QString">192.168.137.103</value>
+       <value type="QString">192.168.137.199</value>
+       <value type="QString">192.168.137.42</value>
+       <value type="QString">192.168.137.208</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths">
        <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedSysroots">
-       <value type="QString">/home/yangjb/work/qt-sdk/host/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
+       <value type="QString">/home/yang/work/qt-sdk/host-5.5.0/arm-buildroot-linux-gnueabihf/sysroot</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2018-11-11T13:14:21.859</value>
+       <value type="QDateTime">2018-09-27T02:59:10.738</value>
+       <value type="QDateTime">2018-09-27T05:09:12.243</value>
+       <value type="QDateTime">2018-10-08T19:15:13.210</value>
+       <value type="QDateTime">2018-09-27T19:00:18.910</value>
+       <value type="QDateTime">2018-09-25T18:26:37.054</value>
+       <value type="QDateTime">2018-09-26T00:21:37.288</value>
+       <value type="QDateTime">2018-09-25T05:57:44.613</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
@@ -352,15 +379,15 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">FlawDetection</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">FlawDetection (on Remote Device)</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/home/yangjb/work/qt-prog/s5p4418-linux-qt5.10-FlawDetection-opengl/FlawDetection/FlawDetection.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:FlawDetection</value>
     <value type="QString" key="Qt4ProjectManager.MaemoRunConfiguration.Arguments"></value>
+    <value type="QString" key="Qt4ProjectManager.MaemoRunConfiguration.TargetName">FlawDetection</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="QString" key="RemoteLinux.RunConfig.AlternateRemoteExecutable"></value>
     <value type="bool" key="RemoteLinux.RunConfig.UseAlternateRemoteExecutable">false</value>
     <value type="QString" key="RemoteLinux.RunConfig.WorkingDirectory"></value>
-    <value type="QString" key="RemoteLinux.RunConfig.WorkingDirectory.default"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

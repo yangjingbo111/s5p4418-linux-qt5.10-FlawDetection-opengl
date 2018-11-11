@@ -126,7 +126,7 @@ void ChartRenderer::initialize()
     program1.bind();
 
     m_vvbo.bind();
-    m_vvbo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    m_vvbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
     m_vvbo.allocate(c_grids_vetices, (20)*sizeof(QVector3D));
     program1.enableAttributeArray("inPosition");
     program1.setAttributeBuffer("inPosition", GL_FLOAT, 0, 3);
@@ -152,6 +152,10 @@ void ChartRenderer::render()
 
     functions->glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    functions->glEnable(GL_TEXTURE_2D);
+    functions->glDisable(GL_DEPTH_TEST);
+    functions->glEnable(GL_BLEND);
+    functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     program1.bind();
 
@@ -233,7 +237,8 @@ void ChartRenderer::setNewData(QByteArray newData, int type)//note:newData åœ¨ç»
                 m_data_vetices[i].setY(-1.0f);
             }
             else {
-                int tmp = newData.at(i) - 128;
+//                int tmp = newData.at(i) - 128; // wrong
+                int tmp = newData.at(i) - 100;
                 m_data_vetices[i].setY(/*399 - tmp*/ -2.0f*tmp/201);  // scale 2
             }
         }
