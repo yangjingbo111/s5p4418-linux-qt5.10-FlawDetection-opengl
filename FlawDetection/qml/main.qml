@@ -17,6 +17,11 @@ Window {
     color: "black"
     title: qsTr("Flaw Detection")
 
+    // date and time
+    property date currentTime: new Date()
+    property string timeStr: Qt.formatDateTime(currentTime, "yyyy-MM-dd hh:mm:ss")
+
+
     property int focusItemIndex: 0
     // menu 1
     property int gainValue: 110
@@ -55,6 +60,18 @@ Window {
         }
     }
 
+    // get battery adc value
+    Timer{
+        id: batterytimer
+        interval: 10*1000  //2min
+        repeat: true
+        running: true
+        onTriggered: {
+            appManager.getadc(0)
+        }
+    }
+
+
     // battery record timer
     Timer{
         id: adctimer
@@ -92,6 +109,20 @@ Window {
         }
     }
 
+    // refresh time every 500ms
+    Timer{
+        interval: 500
+        repeat: true
+        running: true
+
+        onTriggered: {
+            currentTime = new Date()
+            timeStr = Qt.formatDateTime(currentTime, "yyyy-MM-dd hh:mm:ss")
+        }
+    }
+
+
+    // triggered to speed up value change of key press
     Timer{
         id: change_value_timer
         interval: 100
@@ -126,24 +157,48 @@ Window {
         Rectangle{
             width: parent.width
             height: 60
-//            color: "red"
+            color: "gray"
 
             Text {
-                id: name
+                id: battery
                 anchors.centerIn: parent
-                text: qsTr("Flaw Detection App")
+                text: adcval
             }
 
-            Button{
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("exit")
+            Item {
+                id: battery_container
+                anchors.right: time.left
+                anchors.rightMargin: 8
+                width: 30
+                height: parent.height
 
-                onClicked: {
-                    ft2232HWrapper.closeFt2232H()
-                    appManager.startApp("/opt/Launcher/bin/Launcher")
+                Image {
+                    id: battery_icon
+                    anchors.centerIn: parent
+                    source: "qrc:/res/images/bat5_.gif"
+                    width: 20
+                    height: 40
                 }
             }
+
+            Text {
+                id: time
+                color: "white"
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                text: timeStr
+            }
+
+//            Button{
+//                anchors.right: parent.right
+//                anchors.verticalCenter: parent.verticalCenter
+//                text: qsTr("exit")
+
+//                onClicked: {
+//                    ft2232HWrapper.closeFt2232H()
+//                    appManager.startApp("/opt/Launcher/bin/Launcher")
+//                }
+//            }
         }
 
 
