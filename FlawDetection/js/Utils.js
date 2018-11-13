@@ -31,7 +31,22 @@ var KEY_PEAK_MEM = 16777266
 var KEY_AUTO_GAIN = 16777265
 var KEY_PARA_SETTING = 16777264
 
-var MENU_ITEM_NUM =15;
+var KEY_POWER = 16777232
+
+var MENU_ITEM_NUM =15
+
+var BAT_TAB = [3625, 3520, 3430, 3380, 3340, 3220, 2860]    // 5-0
+var BAT_BARS = [
+        "qrc:/res/images/bat5.jpg",
+        "qrc:/res/images/bat4.jpg",
+        "qrc:/res/images/bat3.jpg",
+        "qrc:/res/images/bat2.jpg",
+        "qrc:/res/images/bat1.jpg",
+        "qrc:/res/images/bat0.jpg"
+        ]
+var BAT_CHG_DONE = "qrc:/res/images/bat_charge.jpg"
+
+
 
 function func() {
 

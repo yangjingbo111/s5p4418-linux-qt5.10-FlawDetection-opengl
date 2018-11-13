@@ -21,6 +21,13 @@ Window {
     property date currentTime: new Date()
     property string timeStr: Qt.formatDateTime(currentTime, "yyyy-MM-dd hh:mm:ss")
 
+    // battery and charge
+    property int chg_donen: 0   // 0 charge done; 1 charging...
+    property int pwr_src: 0     // 0 DC adapter;  1 Li battery
+    property int bat_tmp_stage: 0   // battery tmp level [used for battery icon scroll]
+    property int bat_cur_stage: 0   // battery current level
+    property int bat_max_stage: 5
+
 
     property int focusItemIndex: 0
     // menu 1
@@ -44,7 +51,7 @@ Window {
 
     // battery
     property string info: ""
-    property string adcval: ""
+    property string adcval: "4000" // >3625
     property int recordcnt: 0
 
 
@@ -57,15 +64,52 @@ Window {
 
         onAdcReceived: {
             adcval = val
+            var adcint = parseInt(adcval)
+            if( adcint >= Utils.BAT_TAB[0]){        // 5 bars
+                bat_cur_stage = 5
+            }
+            else if(adcint >= Utils.BAT_TAB[1]){    // 4 bars
+                bat_cur_stage = 4
+            }
+            else if(adcint >= Utils.BAT_TAB[2]){    // 3 bars
+                bat_cur_stage = 3
+            }
+            else if(adcint >= Utils.BAT_TAB[3]){
+                bat_cur_stage = 2
+            }
+            else if(adcint >= Utils.BAT_TAB[4]){
+                bat_cur_stage = 1
+            }
+            else if(adcint >= Utils.BAT_TAB[5]){
+                bat_cur_stage = 0
+                // enable low power tips
+
+            }
+            else if(adcint < Utils.BAT_TAB[6]){
+                bat_cur_stage = -1 // very low power !!!
+
+                // save params before poweroff
+
+                // force poweroff
+                appManager.powerOff()
+            }
         }
+        onPwrSrcChanged:{
+            pwr_src = src
+        }
+        onChgStatusChanged:{
+            chg_donen = chg
+        }
+
     }
 
     // get battery adc value
     Timer{
         id: batterytimer
-        interval: 10*1000  //2min
+        interval: 30*1000  // 30s
         repeat: true
         running: true
+        triggeredOnStart: true
         onTriggered: {
             appManager.getadc(0)
         }
@@ -121,6 +165,20 @@ Window {
         }
     }
 
+    // manage battery charging icons scroll
+    Timer{
+        id: bat_charging_timer
+        interval: 1000
+        repeat: true
+        running: false
+        onTriggered: {
+            bat_tmp_stage += 1
+            if(bat_tmp_stage > bat_max_stage){
+                bat_tmp_stage = bat_cur_stage > -1 ? bat_cur_stage : 0
+            }
+//            console.log("---------", bat_tmp_stage)
+        }
+    }
 
     // triggered to speed up value change of key press
     Timer{
@@ -175,7 +233,26 @@ Window {
                 Image {
                     id: battery_icon
                     anchors.centerIn: parent
-                    source: "qrc:/res/images/bat5_.gif"
+                    source: {
+                        if(pwr_src === 1){  // Li battery
+                            return Utils.BAT_BARS[bat_cur_stage > -1 ? bat_max_stage - bat_cur_stage : 0]
+
+                        }
+                        else{   // DC adapter
+                            if(chg_donen === 1){// charging...
+                                bat_charging_timer.running = true
+                                bat_tmp_stage = bat_cur_stage   // initialize
+                                return Utils.BAT_BARS[bat_tmp_stage > 5? 5:bat_max_stage - bat_tmp_stage]
+                            }
+                            else{   // charge done
+                                bat_charging_timer.running = false
+                                return Utils.BAT_CHG_DONE
+                            }
+
+                        }
+
+
+                    }
                     width: 20
                     height: 40
                 }
@@ -445,6 +522,14 @@ Window {
                         ft2232HWrapper.closeFt2232H()
                         appManager.startApp("/opt/Launcher/bin/Launcher")
                     }
+                    else if(event.key === Utils.KEY_POWER){
+                        // todo: save the params before power off
+
+                        // popup a power off confirm window
+                        poweroffdlg.visible = true
+                        poweroffdlg.focus = true
+                    }
+
                     // test battery record download
                     else if(event.key === Utils.KEY_4){   // download battery.txt file to usb disk
                         var usbnode = appManager.getUsbDiskNode()
@@ -723,8 +808,26 @@ Window {
         }
     }
 
+    // up most
+    PoweroffDialog{
+        id: poweroffdlg
+        visible: false
+        onConfirmed: {
 
+            console.log("-------confirm")
+            poweroffdlg.focus = false
+            menu_container.focus = true
+            poweroffdlg.visible = false
+            appManager.powerOff()
+        }
+        onCancelled: {
+            console.log("-------cancel")
+            poweroffdlg.focus = false
+            menu_container.focus = true
+            poweroffdlg.visible = false
 
+        }
+    }
 
 
 }

@@ -25,6 +25,7 @@ public:
     Q_INVOKABLE void downloadFileToUsbDisk(QString usbnode, QString srcfilename);
     Q_INVOKABLE bool checkUsbDisk();
     Q_INVOKABLE QString getUsbDiskNode();
+    Q_INVOKABLE void powerOff();
 
     QList<QMap<QString, int>> listNetworks();
     QMap<QString, int> listNetworks_();
@@ -46,6 +47,8 @@ signals:
     void ipChanged(QString ip);
     void connectionStatusChanged(); //1 connected; 0 unconnected
     void adcReceived(QString val);
+    void pwrSrcChanged(int src);
+    void chgStatusChanged(int chg);
 
     void getadcSignal(int ch);
 public slots:

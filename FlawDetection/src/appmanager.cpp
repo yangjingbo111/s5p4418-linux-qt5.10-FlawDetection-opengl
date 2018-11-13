@@ -13,6 +13,8 @@ AppManager::AppManager(QObject *parent) : QObject(parent)
     m_batteryWorker->moveToThread(m_thread);
     connect(this, SIGNAL(getadcSignal(int)), m_batteryWorker, SLOT(getadc(int)), Qt::QueuedConnection);
     connect(m_batteryWorker, SIGNAL(adcReceived(QString)), this, SIGNAL(adcReceived(QString)), Qt::QueuedConnection);
+    connect(m_batteryWorker, SIGNAL(pwrSrcChanged(int)), this, SIGNAL(pwrSrcChanged(int)), Qt::QueuedConnection);
+    connect(m_batteryWorker, SIGNAL(chgStatusChanged(int)), this, SIGNAL(chgStatusChanged(int)), Qt::QueuedConnection);
 
     m_thread->start();
 
@@ -574,6 +576,16 @@ QString AppManager::getUsbDiskNode()
     ls.waitForFinished();
 
     return res;
+}
+
+void AppManager::powerOff()
+{
+    QString program = "/usr/bin/gpio_test";
+    QStringList arg;
+    arg << "-s"<<"output"<<"-iGPIOF03"<<"-v"<<"0";
+    QProcess myProcess;
+    myProcess.start(program, arg, QIODevice::ReadWrite);
+    myProcess.waitForFinished();
 }
 
 void AppManager::saveAdcToFile(QString filename, QString val)

@@ -13,5 +13,6 @@
         <file>res/images/bat_charge.jpg</file>
         <file>res/images/bat5_.jpg</file>
         <file>res/images/bat5_.gif</file>
+        <file>qml/PoweroffDialog.qml</file>
     </qresource>
 </RCC>

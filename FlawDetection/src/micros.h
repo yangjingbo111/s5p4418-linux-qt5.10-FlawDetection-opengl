@@ -74,6 +74,7 @@ typedef struct Ft2232hCtl{
 #define UDHCPC          "/sbin/udhcpc"
 #define IFCONFIG        "/sbin/ifconfig"
 #define ADC_TEST        "/opt/adc_test"
+#define GPIO_TEST       "/usr/bin/gpio_test"
 #define MOUNT           "/bin/mount"
 #define UMOUNT          "/bin/umount"
 #define CP              "/bin/cp"
