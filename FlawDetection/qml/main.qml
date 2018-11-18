@@ -174,9 +174,10 @@ Window {
         onTriggered: {
             bat_tmp_stage += 1
             if(bat_tmp_stage > bat_max_stage){
-                bat_tmp_stage = bat_cur_stage > -1 ? bat_cur_stage : 0
+//                bat_tmp_stage = bat_cur_stage > -1 ? bat_cur_stage : 0  // range[current, current+1,... max]
+                bat_tmp_stage = 0   // range[0-1-2-3-4-5-0...]
             }
-//            console.log("---------", bat_tmp_stage)
+            console.log("---------", bat_tmp_stage)
         }
     }
 
@@ -235,13 +236,15 @@ Window {
                     anchors.centerIn: parent
                     source: {
                         if(pwr_src === 1){  // Li battery
+                            bat_charging_timer.running = false  // stop timer
                             return Utils.BAT_BARS[bat_cur_stage > -1 ? bat_max_stage - bat_cur_stage : 0]
 
                         }
                         else{   // DC adapter
                             if(chg_donen === 1){// charging...
-                                bat_charging_timer.running = true
-                                bat_tmp_stage = bat_cur_stage   // initialize
+                                bat_charging_timer.restart()
+
+//                                bat_tmp_stage = bat_cur_stage   // initialize
                                 return Utils.BAT_BARS[bat_tmp_stage > 5? 5:bat_max_stage - bat_tmp_stage]
                             }
                             else{   // charge done
