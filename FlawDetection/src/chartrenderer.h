@@ -3,7 +3,7 @@
 
 
 
-#define DATA_LENGTH 512  //暂定画512个数据
+#define DATA_LENGTH 1024//512  //暂定画512个数据
 #define PI 3.1415926
 
 #include <QObject>
@@ -45,8 +45,9 @@ public slots:
 
 private:
     void init();
+    void initVertices(int type);
     int randInt(int low, int high);
-
+    QVector<unsigned int> generateFinalArray(QByteArray arr);
 
 
 //    QScopedPointer<QOpenGLShaderProgram> m_shaderProgram;
@@ -80,6 +81,7 @@ private:
     int vertexAttr1;
     int normalAttr1;
     int matrixUniform1;
+    int m_rectificationType;
 };
 
 #endif // CHARTRENDERER_H

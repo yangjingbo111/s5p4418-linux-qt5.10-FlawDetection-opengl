@@ -17,6 +17,8 @@ Window {
     color: "black"
     title: qsTr("Flaw Detection")
 
+    property bool usefbo: false
+
     // date and time
     property date currentTime: new Date()
     property string timeStr: Qt.formatDateTime(currentTime, "yyyy-MM-dd hh:mm:ss")
@@ -134,9 +136,12 @@ Window {
 
         // ft2232h data ready
         onDataReady: {
-
-//            ascan.recvData(data)
-            ascanfbo.recvData(data)
+            if(usefbo){
+                ascanfbo.recvData(data)
+            }
+            else{
+                ascan.recvData(data)
+            }
         }
     }
 
@@ -286,24 +291,24 @@ Window {
             width: parent.width
             height: 400
 
-//            Ascan {
-//                id: ascan
-//                width: 512
-//                height: 400
-
-//            }
-
-            AscanFbo{
-                id: ascanfbo
+            Ascan {
+                id: ascan
                 width: 512
                 height: 400
+
             }
+
+//            AscanFbo{
+//                id: ascanfbo
+//                width: 512
+//                height: 400
+//            }
 
 
             Item{
                 id: menu_container
-//                anchors.left: ascan.right
-                anchors.left: ascanfbo.right
+                anchors.left: usefbo? ascanfbo.right : ascan.right
+//                anchors.left: ascanfbo.right
                 focus: true
                 visible: true
 
@@ -360,8 +365,11 @@ Window {
                             if(app.rectificationTypeValue < 3)app.rectificationTypeValue += 1
 
                             ft2232HWrapper.wrrectificationType(app.rectificationTypeValue)
-//                            ascan.setrectificationType(app.rectificationTypeValue)
-                            ascanfbo.setrectificationType(app.rectificationTypeValue)
+                            if(usefbo){
+                                ascanfbo.setrectificationType(app.rectificationTypeValue)
+                            }else{
+                                ascan.setrectificationType(app.rectificationTypeValue)
+                            }
 
                         }
                         else if(transducerType.hasFocus){
@@ -394,8 +402,14 @@ Window {
                             if(app.hardwareDrawValue === 0){
                                 app.hardwareDrawValue = 1
                                 ft2232HWrapper.wrhardwareDraw(app.hardwareDrawValue)
-//                                ascan.sethardwareDraw(app.hardwareDrawValue)
-                                ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                                if(usefbo){
+                                    ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                                }else{
+                                    ascan.sethardwareDraw(app.hardwareDrawValue)
+                                }
+
+//
+
                             }
                         }
                         else if(echoDisplayMode.hasFocus){
@@ -461,8 +475,14 @@ Window {
                             if(app.rectificationTypeValue > 0)app.rectificationTypeValue -= 1
 
                             ft2232HWrapper.wrrectificationType(app.rectificationTypeValue)
-//                            ascan.setrectificationType(app.rectificationTypeValue)
-                            ascanfbo.setrectificationType(app.rectificationTypeValue)
+                            if(usefbo){
+                                ascanfbo.setrectificationType(app.rectificationTypeValue)
+                            }else{
+                                ascan.setrectificationType(app.rectificationTypeValue)
+                            }
+
+//
+
                         }
                         else if(transducerType.hasFocus){
                             if(app.transducerTypeValue > 0)app.transducerTypeValue -= 1
@@ -494,8 +514,14 @@ Window {
                             if(app.hardwareDrawValue === 1){
                                 app.hardwareDrawValue = 0
                                 ft2232HWrapper.wrhardwareDraw(app.hardwareDrawValue)
-//                                ascan.sethardwareDraw(app.hardwareDrawValue)
-                                ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                                if(usefbo){
+                                    ascanfbo.sethardwareDraw(app.hardwareDrawValue)
+                                }else{
+                                    ascan.sethardwareDraw(app.hardwareDrawValue)
+                                }
+
+//
+
                             }
                         }
                         else if(echoDisplayMode.hasFocus){

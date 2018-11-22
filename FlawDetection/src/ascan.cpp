@@ -53,12 +53,18 @@ void Ascan::paint(QPainter *painter)
         y += 10;
     }
 
-    if(m_hardwareDraw) return;
+//    if(m_hardwareDraw) return;
 
     // paint A scan
-    painter->setPen(QPen(QColor(Qt::green)));
+    painter->setPen(QPen(QColor(Qt::yellow)));
 //    geneFakeData();
-    painter->drawPolyline(m_points, w);
+//    painter->drawPolyline(m_points, w);
+    if(m_rectificationType>0){
+        painter->drawLines(m_points, w);
+    }else if(m_rectificationType == 0){
+        painter->drawPolyline(m_points, w);
+    }
+
 
     // calculate and display fps
     static int frame_cnt=0;
@@ -146,17 +152,24 @@ void Ascan::combinePoints(QByteArray data)
     // ATTENTION: 400 is the window height[top left is the origin]
     if(m_rectificationType > 0) // 1 2 3
     {
-        for(int i = 0; i< 512; i++){
-            m_points[i].setX(i);
-            if((unsigned char)data.at(i) > 200){  // shape the peak and
+        QVector<unsigned int> finalArr = generateFinalArray(data);
+        // prepare the X values [p0.x = p1.x] [p2.x=p3.x]
+        for(int i = 0; i< 1024; i+=2){
+            m_points[i].setX(i/2);
+            m_points[i+1].setX(i/2);
+        }
+
+        for(int i = 0; i< 1024; i++){
+
+            if(finalArr.at(i) > 400){  // shape the peak and
                 m_points[i].setY(0);
             }
             else {
-                unsigned int tmp = (unsigned char)data.at(i);
-                tmp <<= 1;
-                m_points[i].setY(399 - tmp);  // scale 2
+                unsigned int tmp = finalArr.at(i);
+                m_points[i].setY(399 - tmp);
             }
         }
+
     }
     else{ //radio rectification
         for(int i = 0; i< 512; i++){
@@ -174,14 +187,7 @@ void Ascan::combinePoints(QByteArray data)
             }
         }
     }
-//    for(int i = 0; i< 512; i++){
-//        m_points[i].setX(i);
-//        m_points[i].setY(399 - (unsigned char)data.at(i));
-//        // 400 is the window height[top left is the origin]
-//    }
-
-
-        update();
+    update();
 }
 
 int Ascan::randInt(int low, int high)
@@ -189,3 +195,58 @@ int Ascan::randInt(int low, int high)
     // Random number between low and high
     return qrand() % ((high + 1) - low) + low;
 }
+
+QVector<unsigned int> Ascan::generateFinalArray(QByteArray arr)
+{
+    QVector<unsigned int> array;
+    QVector<unsigned int> finalArray;
+    unsigned int tmp;
+    for(int i = 0;i<512;i++){
+        tmp = (unsigned int)arr.at(i);
+        array.push_back(tmp<<1);
+    }
+    unsigned int goal;
+    unsigned int cur, pre, next;
+    for(int i = 0;i<512;i++){
+        // append the peak value
+
+        // borrow the idea from fpga-way
+        if(i == 0){
+            pre = 0;
+            cur = array.at(i);
+            next = array.at(i+1);
+        }else if(i == 511){
+            pre = array.at(i-1);
+            cur = array.at(i);
+            next = 0;
+        }else{
+            pre = array.at(i-1);
+            cur = array.at(i);
+            next = array.at(i+1);
+        }
+
+        // calc the downside value
+        if(pre <= cur && cur <= next){
+            goal = (pre == cur) ? pre : pre + 1;
+        }else if(pre <= cur && cur >= next){
+            if(pre <= next){
+                goal = (pre == cur)?pre:pre+1;
+            }else{
+                goal = (next == cur)?next:next+1;
+            }
+        }else if(pre >= cur && cur <= next){
+            goal = cur;
+        }else{
+            goal = (next == cur)?next:next+1;
+        }
+
+        // append the downside value
+        finalArray.push_back(cur);
+        finalArray.push_back(goal);
+
+    }
+
+
+    return finalArray;
+}
+

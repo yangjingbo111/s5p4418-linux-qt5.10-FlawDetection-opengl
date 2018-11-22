@@ -46,16 +46,6 @@ ChartRenderer::~ChartRenderer()
     m_data_vbo.destroy();
 }
 
-float c_vertices[] = {
-    //vertex position
-    -0.5f, -0.5f, .0f,
-     0.5f,-0.5f, .0f,
-    0.5f, 0.5f,  .0f,
-    -0.5f, -0.5f, .0f,
-    0.5f, 0.5f,  .0f,
-    -0.5f,0.5f,  .0f,
-};
-
 /**
   背景栅格 5条横线[10个点]
   **/
@@ -94,13 +84,6 @@ QVector3D c_grids_vetices[20] = {
 
     QVector3D(1.0f, 1.0f,  .0f),
     QVector3D(1.0f, -1.0f,  .0f),
-
-
-
-
-
-//    QVector3D(-1.1f,0.9f,0.0f),
-//    QVector3D(-1.0f,1.1f,0.0f),
 
 };
 
@@ -193,7 +176,12 @@ void ChartRenderer::render()
     program1.setUniformValue("b", 0.0f);
     program1.enableAttributeArray("inPosition");
     program1.setAttributeBuffer("inPosition", GL_FLOAT, 0, 3);
-    functions->glDrawArrays(GL_LINE_STRIP, 0, DATA_LENGTH);
+    if(m_rectificationType > 0){
+        functions->glDrawArrays(GL_LINES, 0, DATA_LENGTH);
+    }else if(m_rectificationType == 0){
+        functions->glDrawArrays(GL_LINE_STRIP, 0, DATA_LENGTH/2);
+    }
+
 
     m_data_vbo.release();
 
@@ -213,22 +201,29 @@ void ChartRenderer::render()
 
 void ChartRenderer::setNewData(QByteArray newData, int type)//note:newData 在绘制之前必须要映射到（-1，1）上，或直接在qml端进行映射
 {
+    m_rectificationType = type;
+
     if(newData.length() == 0)return;
 
+    initVertices(type);
     if(type > 0){
-        for(int i = 0; i< 512; i++){
+        QVector<unsigned int> finalArr = generateFinalArray(newData);
 
-            if((unsigned char)newData.at(i) > 200){  // shape the peak and
+        for(int i = 0; i< DATA_LENGTH; i++){
+
+            if(finalArr.at(i) >= 400){  // shape the peak and
                 m_data_vetices[i].setY(-1.0f);
             }
             else {
-                int tmp = newData.at(i) - 100;
-                m_data_vetices[i].setY(/*399 - tmp*/ -2.0f*(tmp)/201);  // scale 2 !! 201 is important
+                //int tmp = finalArr.at(i) - 100;
+                //m_data_vetices[i].setY(/*399 - tmp*/ -2.0f*(tmp)/201);  /*// scale 2 !! 201 is important
+                unsigned int tmp = finalArr.at(i);
+                m_data_vetices[i].setY(/*399 - tmp*/ (200-tmp)/200.0f);
             }
         }
     }
     else{
-        for(int i=0;i<DATA_LENGTH-1;i++)
+        for(int i=0;i<DATA_LENGTH/2;i++)
         {
             if((unsigned char)newData.at(i) <= 28){  // shape the peak and
                 m_data_vetices[i].setY(1.0f);
@@ -312,9 +307,92 @@ void ChartRenderer::init()
 
 }
 
+void ChartRenderer::initVertices(int type)
+{
+    float x = -1.0f;
+    static float distance = 2.0f/511;  // distribute 512 points to x axis[length is 2]
+    float tx;
+    if(type > 0){
+        for(int i=0; i<DATA_LENGTH; i+=2, x+=distance)
+        {
+            tx = x;
+            m_data_vetices[i].setX(tx);
+            m_data_vetices[i+1].setX(tx);
+            m_data_vetices[i].setY(0.0f);
+            m_data_vetices[i+1].setY(0.0f);
+            m_data_vetices[i].setZ(0.0f);
+            m_data_vetices[i+1].setZ(0.0f);
+        }
+    }else if(type == 0){
+        for(int i=0; i<DATA_LENGTH/2; i++, x+=distance)
+        {
+            tx = x;
+            m_data_vetices[i].setX(tx);
+            m_data_vetices[i].setY(0.0f);
+            m_data_vetices[i].setZ(0.0f);
+        }
+    }
+
+
+}
+
 int ChartRenderer::randInt(int low, int high)
 {
     return qrand() % ((high + 1) - low) + low;
+}
+
+QVector<unsigned int> ChartRenderer::generateFinalArray(QByteArray arr)
+{
+    QVector<unsigned int> array;
+    QVector<unsigned int> finalArray;
+    unsigned int tmp;
+    for(int i = 0;i<512;i++){
+        tmp = (unsigned int)arr.at(i);
+        array.push_back(tmp<<1);
+    }
+    unsigned int goal;
+    unsigned int cur, pre, next;
+    for(int i = 0;i<512;i++){
+        // append the peak value
+
+        // borrow the idea from fpga-way
+        if(i == 0){
+            pre = 0;
+            cur = array.at(i);
+            next = array.at(i+1);
+        }else if(i == 511){
+            pre = array.at(i-1);
+            cur = array.at(i);
+            next = 0;
+        }else{
+            pre = array.at(i-1);
+            cur = array.at(i);
+            next = array.at(i+1);
+        }
+
+        // calc the downside value
+        if(pre <= cur && cur <= next){
+            goal = (pre == cur) ? pre : pre + 1;
+        }else if(pre <= cur && cur >= next){
+            if(pre <= next){
+                goal = (pre == cur)?pre:pre+1;
+            }else{
+                goal = (next == cur)?next:next+1;
+            }
+        }else if(pre >= cur && cur <= next){
+            goal = cur;
+        }else{
+            goal = (next == cur)?next:next+1;
+        }
+
+        // append the downside value
+        finalArray.push_back(cur);
+        finalArray.push_back(goal);
+
+    }
+
+
+    return finalArray;
 }
 
 

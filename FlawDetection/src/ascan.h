@@ -24,10 +24,12 @@ private:
     void geneFakeData();
     void combinePoints(QByteArray data);
     int randInt(int low, int high);
+    QVector<unsigned int> generateFinalArray(QByteArray arr);
 private:
     int w;
     int h;
-    QPoint m_points[512];
+//    QPoint m_points[512];
+    QPoint m_points[1024];
     QByteArray m_localData;
     QTime time;
     int m_rectificationType;
