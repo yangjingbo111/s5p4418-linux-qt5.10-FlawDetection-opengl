@@ -36,6 +36,7 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
         connect(this, SIGNAL(wrechoFreezeSig(int)), m_worker, SLOT(wrechoFreeze(int)), Qt::QueuedConnection);
 
 
+
         m_worker->moveToThread(m_thread);
 
         m_thread->start();
@@ -124,6 +125,10 @@ void Ft2232HWrapper::wrvga(int val)
 void Ft2232HWrapper::wrrepeatFreq(int val)
 {
     emit wrrepeatFreqSig(val);
+
+    // [as there is a loop in that worker, can't use signal-slot]
+    m_readWorker->wrrepeatFreq(val);
+
 }
 
 void Ft2232HWrapper::wrhardwareDraw(int val)

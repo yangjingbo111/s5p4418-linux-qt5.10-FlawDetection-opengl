@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.7.0, 2018-11-22T17:21:45. -->
+<!-- Written by QtCreator 4.7.0, 2018-11-23T18:04:59. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -283,22 +283,32 @@
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedFiles">
        <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
        <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts">
        <value type="QString">192.168.137.53</value>
+       <value type="QString">192.168.137.223</value>
        <value type="QString">192.168.137.79</value>
+       <value type="QString">192.168.137.153</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths">
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
        <value type="QString">/opt/FlawDetection/bin</value>
        <value type="QString">/opt/FlawDetection/bin</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedSysroots">
        <value type="QString"></value>
        <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2018-11-13T14:39:28.311</value>
+       <value type="QDateTime">2018-11-23T18:02:57.566</value>
        <value type="QDateTime">2018-11-22T17:00:32.448</value>
+       <value type="QDateTime">2018-11-23T14:10:30.418</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>

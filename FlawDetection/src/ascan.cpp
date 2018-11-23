@@ -25,10 +25,6 @@ Ascan::~Ascan()
 
 void Ascan::paint(QPainter *painter)
 {
-    // paint background
-//    painter->fillRect(QRectF(0,0,w,h), QBrush(QColor(Qt::black)));
-
-
     // paint grid
     QPen pen;
     pen.setWidth(1);
@@ -57,8 +53,7 @@ void Ascan::paint(QPainter *painter)
 
     // paint A scan
     painter->setPen(QPen(QColor(Qt::yellow)));
-//    geneFakeData();
-//    painter->drawPolyline(m_points, w);
+////    geneFakeData();
     if(m_rectificationType>0){
         painter->drawLines(m_points, w);
     }else if(m_rectificationType == 0){
@@ -79,7 +74,7 @@ void Ascan::paint(QPainter *painter)
         fps = frame_cnt * 1000 / time_1s;
         time_1s = 0;
         frame_cnt = 0;
-//        qDebug()<<__func__<<"time = 0"<<time;
+//        qDebug()<<__func__<<"time = ";
     }
 
     time2 = QTime::currentTime().msecsSinceStartOfDay();

@@ -182,7 +182,7 @@ Window {
 //                bat_tmp_stage = bat_cur_stage > -1 ? bat_cur_stage : 0  // range[current, current+1,... max]
                 bat_tmp_stage = 0   // range[0-1-2-3-4-5-0...]
             }
-            console.log("---------", bat_tmp_stage)
+//            console.log("---------", bat_tmp_stage)
         }
     }
 
@@ -394,8 +394,12 @@ Window {
                         }
                         //menu 3
                         else if(repeatFreq.hasFocus){
-//                            if(app.repeatFreqValue < 1000)app.repeatFreqValue += 10
-                            if(app.repeatFreqValue < 1000)app.repeatFreqValue += 5
+                            if(app.repeatFreqValue < 60){
+                                app.repeatFreqValue += 10
+                            }else if(app.repeatFreqValue < 960){
+                                app.repeatFreqValue += 60
+                            }
+//
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
                         }
                         else if(hardwareDraw.hasFocus){//
@@ -506,7 +510,12 @@ Window {
                         }
                         //menu 3
                         else if(repeatFreq.hasFocus){
-                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 5
+                            if(app.repeatFreqValue > 60){
+                                app.repeatFreqValue -= 60
+                            }else if(app.repeatFreqValue > 30){
+                                app.repeatFreqValue -= 10
+                            }
+
 //                            if(app.repeatFreqValue > 30)app.repeatFreqValue -= 2
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
                         }

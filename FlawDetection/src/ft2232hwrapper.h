@@ -68,6 +68,7 @@ private:
     QThread *m_readThread;
     Ft2232HWorker *m_worker;
     Ft2232HReadWorker *m_readWorker;
+    int m_repeatFreq;
 };
 
 #endif // FT2232HWRAPPER_H
