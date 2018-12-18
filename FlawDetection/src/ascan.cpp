@@ -11,9 +11,12 @@ Ascan::Ascan(QQuickItem *parent)
     m_rectificationType = 2; // default to plus rectification
     m_hardwareDraw = 0;      // default : disable hardware draw
 
+    setRenderTarget(QQuickPaintedItem::Image);
+
+
 //    m_timer = new QTimer(this);
 //    m_timer->setTimerType(Qt::PreciseTimer);
-//    m_timer->setInterval(20);
+//    m_timer->setInterval(16);
 //    connect(m_timer, SIGNAL(timeout()), this, SLOT(test_timer()));
 //    m_timer->start();
 }
@@ -56,6 +59,23 @@ void Ascan::paint(QPainter *painter)
 ////    geneFakeData();
     if(m_rectificationType>0){
         painter->drawLines(m_points, w);
+
+
+        if(1){
+            QFile file("/opt/data-in-paint.txt");
+            if (!file.open(QIODevice::Append | QIODevice::Text))
+                return;
+
+            QTextStream out(&file);
+
+            out << QString::number(m_points[1024].x(), 16).rightJustified(2).toUpper()<< " "<<QString::number(m_points[1024].y(), 16).rightJustified(2).toUpper();
+
+            out<<"\r\n";    // packet seperate
+
+            file.close();
+        }
+
+
     }else if(m_rectificationType == 0){
         painter->drawPolyline(m_points, w);
     }
@@ -120,7 +140,7 @@ void Ascan::test_timer()
 //    qsrand((uint)time.msec());
 //    int k = randInt(10,100);
 //    qDebug()<<__func__<<cnt++<<"   "<<k;
-    geneFakeData();
+//    geneFakeData();
 
     update();
 
@@ -164,6 +184,10 @@ void Ascan::combinePoints(QByteArray data)
                 m_points[i].setY(399 - tmp);
             }
         }
+
+        // test show the incremental data
+        m_points[1024].setX(data[524]);
+        m_points[1024].setY(data[525]);
 
     }
     else{ //radio rectification

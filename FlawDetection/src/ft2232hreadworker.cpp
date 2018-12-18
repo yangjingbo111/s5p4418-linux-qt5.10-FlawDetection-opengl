@@ -1,5 +1,8 @@
 #include "ft2232hreadworker.h"
 #include <QDebug>
+#include <QString>
+#include <iostream>
+
 
 Ft2232HReadWorker::Ft2232HReadWorker(FT_HANDLE ftHandle, QObject *parent)
     :QObject (parent)
@@ -18,92 +21,77 @@ Ft2232HReadWorker::~Ft2232HReadWorker()
 
 void Ft2232HReadWorker::readLoop()
 {
-
     while (m_isWorking) {
         if(m_needRead){
             readFifo();
         }
-//        if(!m_list.isEmpty()){
-//            QByteArray arr = m_list.takeFirst();
-//            emit dataReady(arr);
-//        }
 
     }
 }
 
 void Ft2232HReadWorker::readFifo()
 {
-    static int time1,time2,time_16ms = 0;
-    time1 = QTime::currentTime().msecsSinceStartOfDay();
-    time_16ms += time1 - time2;
-    time2 = QTime::currentTime().msecsSinceStartOfDay();
-
-
     FT_STATUS   ftStatus = FT_OK;
+    DWORD EventDWord;
+    DWORD RxBytes;
+    DWORD TxBytes;
     DWORD       bytesReaded = 0;
-    ftStatus = FT_Read(m_ftHandle, m_rdBuf, 1020, &bytesReaded);
-    if (ftStatus != FT_OK)
-    {
-            printf("FT_Read failed (error %d).\n", (int)ftStatus);
+    ftStatus = FT_GetStatus(m_ftHandle, &RxBytes, &TxBytes, &EventDWord);
+    if(ftStatus == FT_OK && RxBytes >= PACKET_SIZE){
+        ftStatus = FT_Read(m_ftHandle, m_dataPool, PACKET_SIZE/*RxBytes*/, &bytesReaded);
+        if (ftStatus != FT_OK)
+        {
+            qDebug()<<__func__<<"FT_Read failed (error %d) "<<(int)ftStatus;
             (void)FT_Close(m_ftHandle);
-    }
+        }
 
-    m_packetIndex++;
-    if(m_packetIndex == 16){
-        m_packetIndex = 0;
-    }
+        if(0){
+            QFile file("/opt/raw-data.txt");
+            if (!file.open(QIODevice::Append | QIODevice::Text))
+                return;
 
-    memcpy(m_dataPool[m_packetIndex], m_rdBuf, bytesReaded);
-    if(time_16ms >= 16){
-        time_16ms = 0;
-//        QByteArray array((const char *)m_dataPool[(m_packetIndex > 0) ? m_packetIndex - 1 : 15], 1020);
-        QByteArray array((const char *)m_dataPool[m_packetIndex], 1020);
-        emit dataReady(array);
-    }
-//    printf("read: %d data.\n", bytesReaded);
-//    for(int i=512;i<512+16/*bytesReaded*/;i++){
-//            printf("%4x", m_rdBuf[i]);
-//            if(i != 0 && i% 16 == 0)printf("\n");
-//    }
-//    QByteArray array((const char *)m_rdBuf, (int)bytesReaded);
-//    emit dataReady(array);
-//    if(m_repeatFreq <= 60){
-////        m_list.append(array);
-//        QByteArray array((const char *)m_rdBuf, (int)bytesReaded);
-//        emit dataReady(array);
-//    }else{
-//        m_capCnt++;
-//        if(m_capCnt >= m_capNum){
-//            m_capCnt = 0;
-////            m_list.append(array);
-//            QByteArray array((const char *)m_rdBuf, (int)bytesReaded);
-//            emit dataReady(array);
+
+            QTextStream out(&file);
+
+            for (int i=0;i<bytesReaded;i++){
+                out << QString::number(m_dataPool[i], 16).rightJustified(2).toUpper()<<" ";
+            }
+
+            out<<"\r\n";    // packet seperate
+
+            file.close();
+        }
+
+
+        // packet loss test[result: no loss 20181218]
+//        // 0x20C[7:0] 0x20D 0X20E 0X20F is packet counter
+//        static int packet_cnt = (int)m_dataPool[0x20C];
+
+//        if(-255 != (int)m_dataPool[0x20c] - packet_cnt && 1 != (int)m_dataPool[0x20c] - packet_cnt){
+//            qDebug()<<"loss packet: "<<(int)m_dataPool[0x20c]-packet_cnt;
+
 //        }
-//    }
+//        packet_cnt = (int)m_dataPool[0x20C];
 
-//    // calc "fps" : read as fast as possible[up to 1k]
-//    static int frame_cnt=0;
-//    static int fps = 0;
-//    static int f_max=1, f_min=1000;
-//    frame_cnt ++;
-//    static int time1,time2,time_1s = 0;
-//    time1 = QTime::currentTime().msecsSinceStartOfDay();
-//    qDebug()<<__func__<<"time="<<time1;
-//    time_1s += time1 - time2;
-//    time2 = QTime::currentTime().msecsSinceStartOfDay();
-////    if(time_1s > 1000){
-////        fps = frame_cnt * 1000 / time_1s;
-////        time_1s = 0;
-////        frame_cnt = 0;
-////        qDebug()<<__func__<<"fps="<<fps<<"min="<<f_min<<"max="<<f_max;
-////    }
+        if(1 || (m_dataPool[0x209] == 0XA5 && m_dataPool[0x20B] == 0X5A)){
+            QByteArray array((const char *)m_dataPool, PACKET_SIZE);
+            emit dataReady(array);
+        }
 
+        if(0 && bytesReaded != PACKET_SIZE){
+            QFile file("/opt/packet-size.txt");
+            if (!file.open(QIODevice::Append | QIODevice::Text))
+                return;
 
+            QTextStream out(&file);
 
-//    if(fps > 0){     // filter invalid data
-//        if(fps > f_max) f_max = fps;
-//        if(fps < f_min) f_min = fps;
-//    }
+            out << bytesReaded;
+
+            out<<"\r\n";    // packet seperate
+
+            file.close();
+        }
+    }
 
 }
 
@@ -119,5 +107,14 @@ void Ft2232HReadWorker::wrrepeatFreq(int val)
 void Ft2232HReadWorker::initWorker()
 {
     readLoop();
+}
+
+void Ft2232HReadWorker::test_timer()
+{
+
+    if(m_needRead){
+        readFifo();
+    }
+
 }
 

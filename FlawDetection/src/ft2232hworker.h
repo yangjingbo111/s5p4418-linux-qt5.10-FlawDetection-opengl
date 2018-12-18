@@ -41,6 +41,8 @@ private:
     bool m_needWrite;   // true when need to write
 
     Ft2232hCtl m_wrData;
+
+
 };
 
 #endif // FT2232HWRITEWORKER_H

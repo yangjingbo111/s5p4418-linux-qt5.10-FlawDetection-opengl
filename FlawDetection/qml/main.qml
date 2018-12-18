@@ -397,7 +397,7 @@ Window {
                             if(app.repeatFreqValue < 60){
                                 app.repeatFreqValue += 10
                             }else if(app.repeatFreqValue < 960){
-                                app.repeatFreqValue += 60
+                                app.repeatFreqValue += 10
                             }
 //
                             ft2232HWrapper.wrrepeatFreq(app.repeatFreqValue)
@@ -511,7 +511,7 @@ Window {
                         //menu 3
                         else if(repeatFreq.hasFocus){
                             if(app.repeatFreqValue > 60){
-                                app.repeatFreqValue -= 60
+                                app.repeatFreqValue -= 10
                             }else if(app.repeatFreqValue > 30){
                                 app.repeatFreqValue -= 10
                             }

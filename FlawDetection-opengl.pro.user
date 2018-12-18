@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.7.0, 2018-11-23T18:04:59. -->
+<!-- Written by QtCreator 4.7.0, 2018-12-18T11:25:28. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -285,14 +285,38 @@
        <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
        <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
        <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
+       <value type="QString">/home/yangjb/work/qt-prog/build-FlawDetection-opengl-qt5_10_linux-Debug/FlawDetection/FlawDetection</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts">
-       <value type="QString">192.168.137.53</value>
+       <value type="QString">192.168.137.121</value>
+       <value type="QString">192.168.137.189</value>
+       <value type="QString">192.168.137.42</value>
+       <value type="QString">192.168.137.124</value>
        <value type="QString">192.168.137.223</value>
-       <value type="QString">192.168.137.79</value>
+       <value type="QString">192.168.137.63</value>
        <value type="QString">192.168.137.153</value>
+       <value type="QString">192.168.137.136</value>
+       <value type="QString">192.168.137.53</value>
+       <value type="QString">192.168.137.79</value>
+       <value type="QString">192.168.137.218</value>
+       <value type="QString">192.168.137.99</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths">
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
+       <value type="QString">/opt/FlawDetection/bin</value>
        <value type="QString">/opt/FlawDetection/bin</value>
        <value type="QString">/opt/FlawDetection/bin</value>
        <value type="QString">/opt/FlawDetection/bin</value>
@@ -303,12 +327,28 @@
        <value type="QString"></value>
        <value type="QString"></value>
        <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2018-11-13T14:39:28.311</value>
+       <value type="QDateTime">2018-11-27T20:01:12.270</value>
+       <value type="QDateTime">2018-12-17T19:48:46.838</value>
+       <value type="QDateTime">2018-12-18T09:51:31.830</value>
+       <value type="QDateTime">2018-11-29T19:03:36.071</value>
        <value type="QDateTime">2018-11-23T18:02:57.566</value>
-       <value type="QDateTime">2018-11-22T17:00:32.448</value>
+       <value type="QDateTime">2018-11-29T14:50:00.630</value>
        <value type="QDateTime">2018-11-23T14:10:30.418</value>
+       <value type="QDateTime">2018-11-26T13:34:38.883</value>
+       <value type="QDateTime">2018-11-13T14:39:28.311</value>
+       <value type="QDateTime">2018-11-22T17:00:32.448</value>
+       <value type="QDateTime">2018-11-30T11:01:12.104</value>
+       <value type="QDateTime">2018-11-23T18:14:34.702</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>

@@ -47,7 +47,8 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
         connect(m_readWorker, SIGNAL(dataReady(QByteArray)), this, SIGNAL(dataReady(QByteArray)), Qt::QueuedConnection);
 //        connect(m_readWorker, SIGNAL(dataReady(QByteArray)), this, SLOT(catchData(QByteArray)), Qt::QueuedConnection);
         m_readWorker->moveToThread(m_readThread);
-        m_readThread->start(QThread::TimeCriticalPriority);
+//        m_readThread->start(QThread::TimeCriticalPriority);
+        m_readThread->start();
         emit initWorker();
     }
 
@@ -129,6 +130,7 @@ void Ft2232HWrapper::wrrepeatFreq(int val)
     // [as there is a loop in that worker, can't use signal-slot]
     m_readWorker->wrrepeatFreq(val);
 
+
 }
 
 void Ft2232HWrapper::wrhardwareDraw(int val)
@@ -181,12 +183,38 @@ bool Ft2232HWrapper::probeFt2232H()
             goto exit;
     }
 
-    ftStatus = FT_SetLatencyTimer(ftHandle, 16);
+    ftStatus = FT_SetLatencyTimer(ftHandle, 16/*2*/);
     if (ftStatus != FT_OK)
     {
             printf("FT_SetLatencyTimer failed (error %d).\n", (int)ftStatus);
             goto exit;
     }
+//    UCHAR latency;
+//    ftStatus = FT_GetLatencyTimer(ftHandle, &latency);
+//    if (ftStatus != FT_OK)
+//    {
+//            printf("FT_GetLatencyTimer failed (error %d).\n", (int)ftStatus);
+//            goto exit;
+//    }
+//    qDebug()<<__func__<<"FT_GetLatencyTimer"<<latency;
+
+    // test start 20181126
+
+//    ftStatus = FT_SetUSBParameters (ftHandle, 1020*16, 512);
+    ftStatus = FT_SetUSBParameters (ftHandle, 1024, /*512*/1024);
+    if (ftStatus != FT_OK)
+    {
+            printf("FT_SetUSBParameters failed (error %d).\n", (int)ftStatus);
+            goto exit;
+    }
+//    ftStatus = FT_SetTimeouts (ftHandle, 1000, 200);
+//    if (ftStatus != FT_OK)
+//    {
+//            printf("FT_SetTimeouts failed (error %d).\n", (int)ftStatus);
+//            goto exit;
+//    }
+    // test end 20181126
+
 
     ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_RTS_CTS, 0, 0);
     if (ftStatus != FT_OK)
@@ -200,6 +228,7 @@ bool Ft2232HWrapper::probeFt2232H()
             printf("FT_Purge failed (error %d).\n", (int)ftStatus);
             goto exit;
     }
+
 
 //    (void)FT_Close(ftHandle);
     return true;    // init ft2232h ok

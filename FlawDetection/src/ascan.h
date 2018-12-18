@@ -29,7 +29,7 @@ private:
     int w;
     int h;
 //    QPoint m_points[512];
-    QPoint m_points[1024];
+    QPoint m_points[1024+1];
     QByteArray m_localData;
     QTime time;
     int m_rectificationType;

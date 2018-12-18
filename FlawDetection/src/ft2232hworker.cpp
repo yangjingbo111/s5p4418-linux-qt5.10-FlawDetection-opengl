@@ -807,6 +807,8 @@ void Ft2232HWorker::wrrepeatFreq(int val)
     // to be finished
     m_wrData.RepeatFre = 100000000/val - 1;
     writeFifo();
+
+
     qDebug()<<__func__<<val;
 
 }
