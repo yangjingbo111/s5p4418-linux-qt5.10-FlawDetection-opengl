@@ -656,6 +656,34 @@ exit:   //something is wrong, need to report
 
 }
 
+void Ft2232HWorker::writeEchoColor(int c)
+{
+    FT_STATUS       ftStatus = FT_OK;
+    DWORD       bytesWritten = 0;
+    USHORT colorBuf[512];   // fow now, just simply use the local variable
+
+    // color map [0 1 2 <=> yellow green blue] (only fpga effective)
+    USHORT single_color = 0XFFE0;   // yellow default
+    if(c == 0) single_color = 0xFFE0;       // yellow
+    else if(c == 1)single_color = 0x07E0;   // green
+    else if(c == 2)single_color = 0x001F;   // blue
+
+    for(int i=0;i<512;i++){
+        colorBuf[i] = single_color;   // single color
+    }
+    ftStatus = FT_Write(m_ftHandle, colorBuf, 1024, &bytesWritten);
+    if (ftStatus != FT_OK)
+    {
+            printf("FT_Write failed (error %d).\n", (int)ftStatus);
+            goto exit;
+    }
+    return;
+
+exit:   //something is wrong, need to report
+    (void)FT_Close(m_ftHandle);
+
+}
+
 #include <QDebug>
 void Ft2232HWorker::testFun(int num)
 {
@@ -785,6 +813,31 @@ void Ft2232HWorker::wrtcgGain(int val)
     myProcess.start(program, arg2, QIODevice::ReadWrite);
     if(myProcess.waitForFinished(1000)){
         qDebug()<<__func__<<"gpio_test  -s output -iGPIOB30 -v 0";
+    }
+    qDebug()<<__func__<<val;
+}
+
+void Ft2232HWorker::wrEchoColor(int val)
+{
+    // change gpio GPIOB[31:30] to 10
+    //    gpio_test  -s output -iGPIOB31 -v 1
+    QString program = "/usr/bin/gpio_test";
+    QStringList arg1,arg2;
+    arg1 << "-s"<<"output"<<"-iGPIOB31"<<"-v"<<"1";
+    QProcess myProcess;
+    myProcess.start(program, arg1, QIODevice::ReadWrite);
+
+    // write 512 half word color value
+    if(myProcess.waitForFinished(1000)){
+        qDebug()<<__func__<<"gpio_test  -s output -iGPIOB31 -v 1";
+        writeEchoColor(val);
+    }
+
+    // change gpio GPIOB[31:30] back to 00
+    arg2 << "-s"<<"output"<<"-iGPIOB31"<<"-v"<<"0";
+    myProcess.start(program, arg2, QIODevice::ReadWrite);
+    if(myProcess.waitForFinished(1000)){
+        qDebug()<<__func__<<"gpio_test  -s output -iGPIOB31 -v 0";
     }
     qDebug()<<__func__<<val;
 }

@@ -34,6 +34,7 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
         connect(this, SIGNAL(wrhardwareDrawSig(int)), m_worker, SLOT(wrhardwareDraw(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrechoDisplayModeSig(int)), m_worker, SLOT(wrechoDisplayMode(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrechoFreezeSig(int)), m_worker, SLOT(wrechoFreeze(int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(wrEchoColorSig(int)), m_worker, SLOT(wrEchoColor(int)), Qt::QueuedConnection);
 
 
 
@@ -146,6 +147,11 @@ void Ft2232HWrapper::wrechoDisplayMode(int val)
 void Ft2232HWrapper::wrechoFreeze(int val)
 {
     emit wrechoFreezeSig(val);
+}
+
+void Ft2232HWrapper::wrEchoColor(int val)
+{
+    emit wrEchoColorSig(val);
 }
 
 void Ft2232HWrapper::catchData(QByteArray data)

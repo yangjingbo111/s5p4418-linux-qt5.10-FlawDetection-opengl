@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE void wrhardwareDraw(int val);
     Q_INVOKABLE void wrechoDisplayMode(int val);
     Q_INVOKABLE void wrechoFreeze(int val);
+    Q_INVOKABLE void wrEchoColor(int val);
 signals:
     void initWorker();
     void callWorker(int num);
@@ -53,6 +54,7 @@ signals:
     void wrhardwareDrawSig(int val);
     void wrechoDisplayModeSig(int val);
     void wrechoFreezeSig(int val);
+    void wrEchoColorSig(int val);
 
 public slots:
        void catchData(QByteArray data);

@@ -49,7 +49,7 @@ Window {
     property int hardwareDrawValue: 0
     property int echoDisplayModeValue: 0
     property int echoFreezeValue: 0
-    property int batteryRecordValue: 0  //0 stopped 1 recording //test
+    property int echoColorValue: 0  //0 yellow 1 green 2 blue
 
     // battery
     property string info: ""
@@ -428,14 +428,15 @@ Window {
                                 ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
                             }
                         }
-                        else if(batteryRecord.hasFocus){
-                            if(app.batteryRecordValue === 0){
-                                app.batteryRecordValue = 1
-                                status.text = "start recording in every 2 min... "
-                                appManager.writeHeader("/opt/battery.txt")
-                                adctimer.restart()
-                                recordcnt = 0
-//                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                        else if(echoColor.hasFocus){
+                            if(app.echoColorValue < 2){
+                                app.echoColorValue += 1
+
+//                                status.text = "start recording in every 2 min... "
+//                                appManager.writeHeader("/opt/battery.txt")
+//                                adctimer.restart()
+//                                recordcnt = 0
+                                ft2232HWrapper.wrEchoColor(app.echoColorValue)
                             }
                         }
                     }
@@ -528,7 +529,6 @@ Window {
                                 }else{
                                     ascan.sethardwareDraw(app.hardwareDrawValue)
                                 }
-
 //
 
                             }
@@ -545,13 +545,14 @@ Window {
                                 ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
                             }
                         }
-                        else if(batteryRecord.hasFocus){
-                            if(app.batteryRecordValue === 1){
-                                app.batteryRecordValue = 0
-                                adctimer.stop()
-//                                appManager.writeFooter("/opt/battery.txt")
-                                status.text = "stopped"
-//                                ft2232HWrapper.wrechoFreeze(app.echoFreezeValue)
+                        else if(echoColor.hasFocus){
+                            if(app.echoColorValue > 0){
+                                app.echoColorValue -= 1
+//                                adctimer.stop()
+//                                status.text = "stopped"
+
+                                ft2232HWrapper.wrEchoColor(app.echoColorValue)
+
                             }
                         }
                         //
@@ -807,13 +808,14 @@ Window {
                         }
 
                     }
-                    // test battery record
+
                     FunctionButton {
-                        id: batteryRecord
-                        title: qsTr("Bat Rec")
+                        id: echoColor
+                        title: qsTr("回波颜色")
                         value: {
-                            if(app.batteryRecordValue === 0)return qsTr("off")
-                            else if(app.batteryRecordValue === 1)return qsTr("on")
+                            if(app.echoColorValue === 0)return qsTr("黄色")
+                            else if(app.echoColorValue === 1)return qsTr("绿色")
+                            else if(app.echoColorValue === 2)return qsTr("蓝色")
                         }
                         index: 14
                         hasFocus: {

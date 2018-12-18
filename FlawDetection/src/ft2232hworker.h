@@ -16,6 +16,7 @@ public:
     void loadDefaultWrBuf();
     void writeFifo();
     void writeTCGGain();
+    void writeEchoColor(int c);
 
 public slots:
     void testFun(int num);
@@ -28,6 +29,7 @@ public slots:
     void wrrectificationType(int val);
     void wrtransducerType(int val);
     void wrtcgGain(int val);
+    void wrEchoColor(int val);
     void wrkeyBoardBacklight(int val);
     void wrvga(int val);
 
