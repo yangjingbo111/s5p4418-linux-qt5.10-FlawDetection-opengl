@@ -30,19 +30,15 @@ signals:
 
 public slots:
     void initWorker();
-    void test_timer();
 private:
     FT_HANDLE       m_ftHandle;
     int             portNumber = 0;
     bool m_isWorking;   // indicate ft2232h working status, in order to control the main loop
-    bool m_needRead;    // true when need to read
 
     UCHAR m_rdBuf[PACKET_SIZE];
     QTime time;
     QTimer *m_timer;
     int m_repeatFreq;     // repeat frequency
-    int m_capCnt;
-    int m_capNum;
     QList<QByteArray> m_list;
     UCHAR m_dataPool[PACKET_SIZE];
 
