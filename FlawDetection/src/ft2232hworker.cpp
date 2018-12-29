@@ -705,6 +705,7 @@ void Ft2232HWorker::testFun(int num)
 void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
 {
     int MAX_GAIN = 1100;
+    int ZERO_DB_OFFSET = 1;
     int JumpPnt1Index = 0;
     int m_iJumpPnt1 = m_pVal[JumpPnt1Index];//400;
     int m_iValNum = sizeof (m_pVal)/sizeof (int);//76;
@@ -718,8 +719,8 @@ void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
         iOdd = iGain%10;
         if (iOffset < m_iValNum)
         {
-            iOdd *= ((m_pVal[iOffset+1]-m_pVal[iOffset])/10);
-            iGain = m_pVal[iOffset] + iOdd;
+            iOdd *= ((m_pVal[iOffset+1+ZERO_DB_OFFSET]-m_pVal[iOffset+ZERO_DB_OFFSET])/10);
+            iGain = m_pVal[iOffset+ZERO_DB_OFFSET] + iOdd;
             fixGain = 0;
         }
     }
@@ -729,8 +730,8 @@ void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
         iOdd = (iGain-m_iJumpPnt1)%10;
         if (iOffset < m_iValNum)
         {
-            iOdd *= ((m_pVal[iOffset+1]-m_pVal[iOffset])/10);
-            iGain = m_pVal[iOffset] + iOdd;
+            iOdd *= ((m_pVal[iOffset+1+ZERO_DB_OFFSET]-m_pVal[iOffset+ZERO_DB_OFFSET])/10);
+            iGain = m_pVal[iOffset+ZERO_DB_OFFSET] + iOdd;
             fixGain = 1;
         }
     }
@@ -739,7 +740,8 @@ void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
         iGain = m_pVal[m_iValNum-1];
         fixGain = 1;
     }
-    m_wrData.SYS_GAIN_REG = ((unsigned short)iGain) | (m_wrData.SYS_GAIN_REG & 0x1000);
+//    m_wrData.SYS_GAIN_REG = ((unsigned short)iGain) | (m_wrData.SYS_GAIN_REG & 0x1000);
+    m_wrData.SYS_GAIN_REG = ((unsigned short)iGain) | (fixGain << 12);
     writeFifo();
     qDebug()<<__func__<<gain<<iGain<<fixGain;
 }
