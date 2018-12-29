@@ -18,7 +18,7 @@ Ft2232HWrapper::Ft2232HWrapper(QObject *parent)
 
         // control API
         // menu 1
-        connect(this, SIGNAL(wrGainSig(int)), m_worker, SLOT(wrGain(int)), Qt::QueuedConnection);
+        connect(this, SIGNAL(wrGainSig(float)), m_worker, SLOT(wrGain(float)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrRangeSig(int)), m_worker, SLOT(wrRange(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrHighVolSig(int)), m_worker, SLOT(wrHighVol(int)), Qt::QueuedConnection);
         connect(this, SIGNAL(wrEmitDampSig(int)), m_worker, SLOT(wrEmitDamp(int)), Qt::QueuedConnection);
@@ -73,7 +73,7 @@ void Ft2232HWrapper::closeFt2232H()
     }
 }
 
-void Ft2232HWrapper::wrGain(int val)
+void Ft2232HWrapper::wrGain(float val)
 {
     emit wrGainSig(val);
 }

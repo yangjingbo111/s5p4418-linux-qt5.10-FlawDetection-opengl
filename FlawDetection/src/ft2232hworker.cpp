@@ -702,7 +702,7 @@ void Ft2232HWorker::testFun(int num)
     qDebug()<<__func__<<QThread::currentThreadId();
 }
 
-void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
+void Ft2232HWorker::wrGain(float gain) // gain type needs to be float
 {
     int MAX_GAIN = 1100;
     int ZERO_DB_OFFSET = 1;
@@ -711,6 +711,7 @@ void Ft2232HWorker::wrGain(int gain) // gain type needs to be float
     int m_iValNum = sizeof (m_pVal)/sizeof (int);//76;
 
     int iGain = (int)(gain * 10);
+    qDebug()<<__func__<<gain<<iGain;
     int fixGain = 0;
     int iOffset = 0, iOdd;
     if (iGain < m_iJumpPnt1)

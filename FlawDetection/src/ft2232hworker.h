@@ -20,7 +20,7 @@ public:
 
 public slots:
     void testFun(int num);
-    void wrGain(int gain);
+    void wrGain(float gain);
     void wrRange(int val);
     void wrHighVol(int val);
     void wrEmitDamp(int val);

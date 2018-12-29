@@ -33,7 +33,8 @@ Window {
 
     property int focusItemIndex: 0
     // menu 1
-    property int gainValue: 110
+    property real gainValue: 110
+    property real gainStepValue: 1       // 0.1 1 2 6: default 1
     property int rangeValue: 200
     property int highVolValue: 0
     property int emitDampValue: 0
@@ -197,13 +198,13 @@ Window {
             if(app.keyType === "right"){
                 app.gainValue += 2
 
-                ft2232HWrapper.wrGain(app.gainValue)
+                ft2232HWrapper.wrGain(app.gainValue.toFixed(1))
             }
             else if(app.keyType === "left"){
                 if(app.gainValue > 2){
                     app.gainValue -= 2
 
-                    ft2232HWrapper.wrGain(app.gainValue)
+                    ft2232HWrapper.wrGain(app.gainValue.toFixed(1))
                 }
 
 
@@ -223,10 +224,19 @@ Window {
             height: 60
             color: "gray"
 
+//            Text {
+//                id: battery
+//                anchors.centerIn: parent
+//                text: adcval
+//            }
+
             Text {
-                id: battery
-                anchors.centerIn: parent
-                text: adcval
+                id: gainStep
+                anchors.right: battery_container.left
+                anchors.verticalCenter: parent.verticalCenter
+                color: "white"
+                font.pixelSize: 14
+                text: gainStepValue + "dB"
             }
 
             Item {
@@ -315,8 +325,19 @@ Window {
 
 
                 Keys.onPressed: {
+                    if(event.key === Utils.KEY_CONFIRM){   //KEY CONFIRM
+                        // control the hasFocus owner
+                        switch(app.focusItemIndex){
+                            case 0: // FOCUS ON GAIN, loop over 0.1/1/2/6
+                                if(gainStepValue === 0.1)gainStepValue=1
+                                else if(gainStepValue === 1)gainStepValue=2
+                                else if(gainStepValue === 2)gainStepValue=6
+                                else if(gainStepValue === 6)gainStepValue=0.1
 
-                    if(event.key === Utils.KEY_UP){   //KEY UP, SELECT THE UPSIDE ITEM
+                            break;
+                        }
+                    }
+                    else if(event.key === Utils.KEY_UP){   //KEY UP, SELECT THE UPSIDE ITEM
                         // control the hasFocus owner
                         if(app.focusItemIndex > 0) app.focusItemIndex -= 1
                         else if(app.focusItemIndex === 0)app.focusItemIndex = Utils.MENU_ITEM_NUM - 1
@@ -331,9 +352,9 @@ Window {
                         if(gain.hasFocus){
                             long_press_timer.restart()    //
 
-                            app.gainValue += 2
+                            app.gainValue += gainStepValue
 
-                            ft2232HWrapper.wrGain(app.gainValue)
+                            ft2232HWrapper.wrGain(app.gainValue.toFixed(1))
 
                             ft2232HWrapper.testFun(0) // test key sound
                         }
@@ -443,12 +464,16 @@ Window {
                     else if(event.key === Utils.KEY_LEFT){  //KEY LEFT -
                         app.keyType = "left"
                         if(gain.hasFocus){
-                            if(app.gainValue >= 2){
+                            if(app.gainValue >= 0){
                                 long_press_timer.restart()    //
-                                app.gainValue -= 2
+                                app.gainValue -= gainStepValue
 
-                                ft2232HWrapper.wrGain(app.gainValue)
+                                // in case out of range
+                                if(app.gainValue < 0)app.gainValue = 0;
+
+                                ft2232HWrapper.wrGain(app.gainValue.toFixed(1))
                             }
+
                         }
                         else if(range.hasFocus){
                             if(app.rangeValue >= 10){
@@ -598,7 +623,7 @@ Window {
                     FunctionButton {
                         id: gain
                         title: qsTr("menu_gain")
-                        value: app.gainValue
+                        value: app.gainValue.toFixed(1)    // show only one decimal
                         index: 0
                         // for now, gain's hasFocus is true[just for test period]
                         hasFocus: {

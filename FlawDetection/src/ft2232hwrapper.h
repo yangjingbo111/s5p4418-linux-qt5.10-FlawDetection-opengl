@@ -16,7 +16,7 @@ public:
     Q_INVOKABLE void testFun(int num);
     Q_INVOKABLE void closeFt2232H();
 
-    Q_INVOKABLE void wrGain(int val);
+    Q_INVOKABLE void wrGain(float val);
     Q_INVOKABLE void wrRange(int val);
     Q_INVOKABLE void wrHighVol(int val);
     Q_INVOKABLE void wrEmitDamp(int val);
@@ -38,7 +38,7 @@ signals:
     void callWorker(int num);
     void dataReady(QByteArray data);
     // menu 1
-    void wrGainSig(int val);
+    void wrGainSig(float val);
     void wrRangeSig(int val);
     void wrHighVolSig(int val);
     void wrEmitDampSig(int val);
