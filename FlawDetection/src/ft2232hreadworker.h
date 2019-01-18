@@ -7,7 +7,7 @@
 #include <QTimer>
 #include <QList>
 
-#define MAX_BUF_SIZE 16
+#define MAX_BUF_SIZE 32
 #define PACKET_SIZE 1020    // each packet has 1020 bytes, among them, 512 bytes are echoing data
 
 class Ft2232HReadWorker : public QObject
@@ -35,7 +35,9 @@ private:
     int             portNumber = 0;
     bool m_isWorking;   // indicate ft2232h working status, in order to control the main loop
 
-    UCHAR m_rdBuf[PACKET_SIZE];
+    UCHAR m_rdBuf[MAX_BUF_SIZE][PACKET_SIZE];
+    int m_wr_index; // index which one to store data
+    bool m_has_packet;  // indicate whether there is some packets
     QTime time;
     QTimer *m_timer;
     int m_repeatFreq;     // repeat frequency
